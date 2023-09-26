@@ -1,8 +1,11 @@
 import java.util.ArrayList;
+import java.util.function.BiFunction;
 
 public class Engine {
 
     int MAXCOUNT = 20; // increase later
+
+    public static ArrayList<BiFunction<Double, Double, Double>> sequence = new ArrayList<>();
 
     public static boolean checkVariables(){
         return false; 
@@ -17,7 +20,6 @@ public class Engine {
         //add right skipping to avoid digits and operators
         return (int) input;
     }
-
 
     public static ArrayList<String> tokenize(String input){
         ArrayList<String> tokens = new ArrayList<>();
@@ -41,6 +43,10 @@ public class Engine {
 
     public static String pemdas(String input, ArrayList<Double> numbers){
         
+        if (input.length() == 1){
+            return input;
+        }
+
         String full = input;
         String working = input;
         //parentheses
@@ -55,13 +61,13 @@ public class Engine {
                 break;
             }
         }
-        
-        if(Math.abs(parenEnd - parenStart) <= 2){
-            full = full.substring(0, parenStart) + full.substring(parenEnd+1);
-            //return
-        }
 
+    
         if(parenStart != -1 && parenEnd != -1){
+            if(Math.abs(parenEnd - parenStart) <= 2){
+                full = full.substring(0, parenStart) + full.substring(parenStart+1, parenEnd) + full.substring(parenEnd+1);
+                return Engine.pemdas(full, numbers);
+            }
             working = working.substring(parenStart+1, parenEnd);
         }
 
@@ -70,21 +76,101 @@ public class Engine {
         //exponents
         int firstNumIndex = working.indexOf("^")-1;
         int secondNumIndex = working.indexOf("^")+1;
-        double firstNum = numbers.get(charToInt(working.charAt(firstNumIndex)));
-        double secondNum = numbers.get(charToInt(working.charAt(secondNumIndex)));
+
+        if(firstNumIndex != -2 && secondNumIndex != 0){
+            double firstNum = numbers.get(charToInt(working.charAt(firstNumIndex)));
+            double secondNum = numbers.get(charToInt(working.charAt(secondNumIndex)));
+
+            //compute and save command
+            double e = Math.pow(firstNum, secondNum);
+            numbers.add(e);
+            sequence.add(Engine::exponent);
 
 
+            full = full.substring(0, firstNumIndex+offset) + intToChar(numbers.size()-1) + full.substring(secondNumIndex+1+offset);
+            
+            return Engine.pemdas(full, numbers);
+        }
         
-        //compute and save command
-        double e = Math.pow(firstNum, secondNum);
-        numbers.add(e);
+
+        //multiplication
+        firstNumIndex = working.indexOf("*")-1;
+        secondNumIndex = working.indexOf("*")+1;
+
+        if(firstNumIndex != -2 && secondNumIndex != 0){
+            double firstNum = numbers.get(charToInt(working.charAt(firstNumIndex)));
+            double secondNum = numbers.get(charToInt(working.charAt(secondNumIndex)));
+
+            //compute and save command
+            double e = firstNum * secondNum;
+            numbers.add(e);
+            sequence.add(Engine::multiply);
 
 
-        //System.out.println(full.substring(0, firstNumIndex));
-        full = full.substring(0, firstNumIndex+offset) + intToChar(numbers.size()-1) + full.substring(secondNumIndex+1+offset);
+            full = full.substring(0, firstNumIndex+offset) + intToChar(numbers.size()-1) + full.substring(secondNumIndex+1+offset);
+            
+            return Engine.pemdas(full, numbers);
+        }
+
+        //division
+        firstNumIndex = working.indexOf("/")-1;
+        secondNumIndex = working.indexOf("/")+1;
+
+        if(firstNumIndex != -2 && secondNumIndex != 0){
+            double firstNum = numbers.get(charToInt(working.charAt(firstNumIndex)));
+            double secondNum = numbers.get(charToInt(working.charAt(secondNumIndex)));
+
+            //compute and save command
+            double e = firstNum / secondNum;
+            numbers.add(e);
+            sequence.add(Engine::divide);
+
+
+            full = full.substring(0, firstNumIndex+offset) + intToChar(numbers.size()-1) + full.substring(secondNumIndex+1+offset);
+            
+            return Engine.pemdas(full, numbers);
+        }
+
+        //addition
+        firstNumIndex = working.indexOf("+")-1;
+        secondNumIndex = working.indexOf("+")+1;
+
+        if(firstNumIndex != -2 && secondNumIndex != 0){
+            double firstNum = numbers.get(charToInt(working.charAt(firstNumIndex)));
+            double secondNum = numbers.get(charToInt(working.charAt(secondNumIndex)));
+
+            //compute and save command
+            double e = firstNum + secondNum;
+            numbers.add(e);
+            sequence.add(Engine::divide);
+
+
+            full = full.substring(0, firstNumIndex+offset) + intToChar(numbers.size()-1) + full.substring(secondNumIndex+1+offset);
+            
+            return Engine.pemdas(full, numbers);
+        }
+
+
+        //subscribe
+        firstNumIndex = working.indexOf("-")-1;
+        secondNumIndex = working.indexOf("-")+1;
+
+        if(firstNumIndex != -2 && secondNumIndex != 0){
+            double firstNum = numbers.get(charToInt(working.charAt(firstNumIndex)));
+            double secondNum = numbers.get(charToInt(working.charAt(secondNumIndex)));
+
+            //compute and save command
+            double e = firstNum - secondNum;
+            numbers.add(e);
+            sequence.add(Engine::subtract);
+
+
+            full = full.substring(0, firstNumIndex+offset) + intToChar(numbers.size()-1) + full.substring(secondNumIndex+1+offset);
+            
+            return Engine.pemdas(full, numbers);
+        }
         
-        
-        return full;
+        return Engine.pemdas(full, numbers);
     }
 
     //static for now to make testing easier
@@ -112,4 +198,25 @@ public class Engine {
 
         return output;
     }
+
+    static double multiply(double a, double b){
+        return a * b;
+    }
+
+    public static double add(Double a, Double b){
+        return a + b;
+    }
+
+    static double divide(double a, double b){
+        return a / b;
+    }
+
+    static double subtract(double a, double b){
+        return a - b;
+    }
+
+    static double exponent(double a, double b){
+        return Math.pow(a, b);
+    }
+
 }
