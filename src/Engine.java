@@ -1,24 +1,34 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.concurrent.Callable;
 import java.util.function.BiFunction;
+import java.util.function.DoubleSupplier;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class Engine {
+    public static ArrayList<Callable<Double>> sequence = new ArrayList<>();
+    public static ArrayList<Double> parameters = new ArrayList<>();
 
-    int MAXCOUNT = 20; // increase later
-
-    public static ArrayList<BiFunction<Double, Double, Double>> sequence = new ArrayList<>();
+    private static char[] pemdasops = new char[] {'^','*','/','+','-'}; 
+    public static TreeMap<Character, BiFunction<Double, Double, Double>> operator = new TreeMap<>();
+    
+    static int charskip = 200;
 
     public static boolean checkVariables(){
         return false; 
     }
 
     public static char intToChar(int input){
-        //add right skipping to avoid digits and operators
-        return (char) input;
+        //skipping to avoid digits and operators
+        return (char) (input+charskip);
     } 
 
     public static int charToInt(char input){
-        //add right skipping to avoid digits and operators
-        return (int) input;
+        //skipping to avoid digits and operators
+        return (int) (input-charskip);
     }
 
     public static ArrayList<String> tokenize(String input){
@@ -73,103 +83,34 @@ public class Engine {
 
         int offset = parenStart+1;
 
-        //exponents
-        int firstNumIndex = working.indexOf("^")-1;
-        int secondNumIndex = working.indexOf("^")+1;
+        for (char op : pemdasops){
+            int firstNumIndex = working.indexOf(op)-1;
+            int secondNumIndex = working.indexOf(op)+1;
+  
 
-        if(firstNumIndex != -2 && secondNumIndex != 0){
-            double firstNum = numbers.get(charToInt(working.charAt(firstNumIndex)));
-            double secondNum = numbers.get(charToInt(working.charAt(secondNumIndex)));
+            if(firstNumIndex != -2 && secondNumIndex != 0){
 
-            //compute and save command
-            double e = Math.pow(firstNum, secondNum);
-            numbers.add(e);
-            sequence.add(Engine::exponent);
+                if(Character.isAlphabetic(working.charAt(firstNumIndex))){
 
-
-            full = full.substring(0, firstNumIndex+offset) + intToChar(numbers.size()-1) + full.substring(secondNumIndex+1+offset);
-            
-            return Engine.pemdas(full, numbers);
-        }
-        
-
-        //multiplication
-        firstNumIndex = working.indexOf("*")-1;
-        secondNumIndex = working.indexOf("*")+1;
-
-        if(firstNumIndex != -2 && secondNumIndex != 0){
-            double firstNum = numbers.get(charToInt(working.charAt(firstNumIndex)));
-            double secondNum = numbers.get(charToInt(working.charAt(secondNumIndex)));
-
-            //compute and save command
-            double e = firstNum * secondNum;
-            numbers.add(e);
-            sequence.add(Engine::multiply);
-
-
-            full = full.substring(0, firstNumIndex+offset) + intToChar(numbers.size()-1) + full.substring(secondNumIndex+1+offset);
-            
-            return Engine.pemdas(full, numbers);
-        }
-
-        //division
-        firstNumIndex = working.indexOf("/")-1;
-        secondNumIndex = working.indexOf("/")+1;
-
-        if(firstNumIndex != -2 && secondNumIndex != 0){
-            double firstNum = numbers.get(charToInt(working.charAt(firstNumIndex)));
-            double secondNum = numbers.get(charToInt(working.charAt(secondNumIndex)));
-
-            //compute and save command
-            double e = firstNum / secondNum;
-            numbers.add(e);
-            sequence.add(Engine::divide);
-
-
-            full = full.substring(0, firstNumIndex+offset) + intToChar(numbers.size()-1) + full.substring(secondNumIndex+1+offset);
-            
-            return Engine.pemdas(full, numbers);
-        }
-
-        //addition
-        firstNumIndex = working.indexOf("+")-1;
-        secondNumIndex = working.indexOf("+")+1;
-
-        if(firstNumIndex != -2 && secondNumIndex != 0){
-            double firstNum = numbers.get(charToInt(working.charAt(firstNumIndex)));
-            double secondNum = numbers.get(charToInt(working.charAt(secondNumIndex)));
-
-            //compute and save command
-            double e = firstNum + secondNum;
-            numbers.add(e);
-            sequence.add(Engine::divide);
-
-
-            full = full.substring(0, firstNumIndex+offset) + intToChar(numbers.size()-1) + full.substring(secondNumIndex+1+offset);
-            
-            return Engine.pemdas(full, numbers);
+                }
+                //keep adding expression results? to list and then access them based on counter?
+                //benchmark performance increase from just substitution in string
+                double firstNum = numbers.get(charToInt(working.charAt(firstNumIndex)));
+                double secondNum = numbers.get(charToInt(working.charAt(secondNumIndex)));
+    
+                //compute and save command
+                double e = operator.get(op).apply(firstNum, secondNum);
+                numbers.add(e);
+                sequence.add(() -> operator.get(op).apply(firstNum, secondNum));
+    
+    
+                full = full.substring(0, firstNumIndex+offset) + intToChar(numbers.size()-1) + full.substring(secondNumIndex+1+offset);
+                
+                return Engine.pemdas(full, numbers);
+            }
         }
 
 
-        //subscribe
-        firstNumIndex = working.indexOf("-")-1;
-        secondNumIndex = working.indexOf("-")+1;
-
-        if(firstNumIndex != -2 && secondNumIndex != 0){
-            double firstNum = numbers.get(charToInt(working.charAt(firstNumIndex)));
-            double secondNum = numbers.get(charToInt(working.charAt(secondNumIndex)));
-
-            //compute and save command
-            double e = firstNum - secondNum;
-            numbers.add(e);
-            sequence.add(Engine::subtract);
-
-
-            full = full.substring(0, firstNumIndex+offset) + intToChar(numbers.size()-1) + full.substring(secondNumIndex+1+offset);
-            
-            return Engine.pemdas(full, numbers);
-        }
-        
         return Engine.pemdas(full, numbers);
     }
 

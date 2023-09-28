@@ -1,2 +1,2 @@
 # CalcMaestro
-Sexy ass calculator
+Sexy Ass Calculator
