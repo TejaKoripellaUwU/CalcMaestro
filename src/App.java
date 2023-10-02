@@ -8,8 +8,8 @@ public class App{
         Engine.init();
         Calculator calc = new Calculator();
 
-        double ans = calc.answer("5+5");
+        ArrayList<Double> result = calc.range2d(".002*x", 100, 0, 50000);
 
-        System.out.println(ans);
+        System.out.println(result);
     }
 }

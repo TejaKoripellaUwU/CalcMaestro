@@ -7,7 +7,9 @@ import java.util.function.BiFunction;
 public class Engine {
     public static ArrayList<Callable<Double>> sequence = new ArrayList<>();
     public static ArrayList<Double> parameters = new ArrayList<>();
+
     public static ArrayList<Double> numbers = new ArrayList<>();
+    public static ArrayList<Integer> variableIndices = new ArrayList<>();
 
 
     public static char[] pemdasops = new char[] {'^','*','/','+','-'}; 

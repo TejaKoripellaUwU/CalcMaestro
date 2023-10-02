@@ -7,9 +7,6 @@ public class Parser {
 
     private static int charskip = 200;
 
-    public Parser(){
-
-    }
 
     public static char intToChar(int input){
         //skipping to avoid digits and operators
@@ -83,6 +80,8 @@ public class Parser {
         return this.pemdasSimplify(full, outSequence);
     }
 
+    
+
     public String findNumbers(String expression){
         expression = expression += " ";
         String currentNum = "";
@@ -92,7 +91,15 @@ public class Parser {
             char currentChar = expression.charAt(i);
             if(Character.isDigit(currentChar) || currentChar == '.'){
                 currentNum += currentChar;
-            }else{
+            }else if(Character.isAlphabetic(currentChar)){
+                Engine.numbers.add(0.0);
+                Engine.variableIndices.add(Engine.numbers.size()-1);
+                output += expression.substring(start, i) + intToChar(Engine.numbers.size()-1);
+                currentNum = "";
+                start = i+1;
+            }
+            
+            else{
                 if (currentNum.length() > 0){
                     Engine.numbers.add(Double.parseDouble(currentNum));
                     output += expression.substring(start, i-currentNum.length()) + intToChar(Engine.numbers.size()-1);
@@ -102,6 +109,9 @@ public class Parser {
                     output += expression.substring(start, i-currentNum.length());
                 }
             }
+
+            
+
         }
 
         return output;
