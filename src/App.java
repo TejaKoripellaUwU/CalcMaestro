@@ -8,8 +8,13 @@ public class App{
         Engine.init();
         Calculator calc = new Calculator();
 
-        ArrayList<Double> result = calc.range2d(".002*x", 100, 0, 50000);
+        //ArrayList<Double> result = calc.range2d(".002*x", 100, 0, 50000);
 
-        System.out.println(result);
+        // for (char[] ops : Engine.pemdasops){
+        //     System.out.println(Engine.pemdasops[0]);
+        // }
+
+        System.out.println(calc.answer("100/5*10"));
+
     }
 }

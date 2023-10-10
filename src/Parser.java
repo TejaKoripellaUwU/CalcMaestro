@@ -23,7 +23,6 @@ public class Parser {
         if (input.length() == 1){
             return input;
         }
-        //System.out.println(Engine.numbers);
 
         String full = input;
         String working = input;
@@ -51,13 +50,30 @@ public class Parser {
 
         int offset = parenStart+1;
 
-        for (char op : Engine.pemdasops){
-            int firstNumIndex = working.indexOf(op)-1;
-            int secondNumIndex = working.indexOf(op)+1;
-  
+        for (char[] ops : Engine.pemdasops){
+            
+            int earliestOpIndex = Integer.MAX_VALUE;
+            char operator = 0;
+
+            for (char op : ops){
+                int opindex = working.indexOf(op);
+                if (opindex == -1){
+                    continue;
+                }
+
+                if (opindex < earliestOpIndex){
+                    earliestOpIndex = opindex;
+                    operator = op;
+                }
+
+            }
+
+
+            int firstNumIndex = working.indexOf(operator)-1;
+            int secondNumIndex = working.indexOf(operator)+1;
 
             if(firstNumIndex != -2 && secondNumIndex != 0){
-
+                
                 //keep adding expression results? to list and then access them based on counter?
                 //benchmark performance increase from just substitution in string
                 int firstListNumIndex = charToInt(working.charAt(firstNumIndex));
@@ -65,9 +81,10 @@ public class Parser {
 
     
                 //compute and save command
-                Engine.operators.get(op).apply(firstListNumIndex, secondListNumIndex);
+                Engine.operators.get(operator).apply(firstListNumIndex, secondListNumIndex);
                 if(outSequence != null){
-                    outSequence.add(() -> Engine.operators.get(op).apply(firstListNumIndex, secondListNumIndex));
+                    BiFunction<Integer, Integer, Double> gay = Engine.operators.get(operator);
+                    outSequence.add(() -> gay.apply(firstListNumIndex, secondListNumIndex));
                 }
     
                 full = full.substring(0, firstNumIndex+offset) + intToChar(Engine.numbers.size()-1) + full.substring(secondNumIndex+1+offset);

@@ -12,7 +12,7 @@ public class Engine {
     public static ArrayList<Integer> variableIndices = new ArrayList<>();
 
 
-    public static char[] pemdasops = new char[] {'^','*','/','+','-'}; 
+    public static char[][] pemdasops = new char[][] {{'^', '~'}, {'*','/'}, {'+','-'}}; 
     public static TreeMap<Character, BiFunction<Integer, Integer, Double>> operators = new TreeMap<>();
     
     static int charskip = 200;
@@ -23,10 +23,6 @@ public class Engine {
         Engine.operators.put('/', Engine::divide);
         Engine.operators.put('+', Engine::add);
         Engine.operators.put('-', Engine::subtract);
-    }
-
-    public static void runOperationSequence(){
-
     }
 
 
