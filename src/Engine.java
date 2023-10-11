@@ -12,12 +12,13 @@ public class Engine {
     public static ArrayList<Integer> variableIndices = new ArrayList<>();
 
 
-    public static String[][] pemdasops = new String[][] {{"^"}, {"*","/"}, {"+","-"}}; 
+    public static String[][] pemdasops = new String[][] {{"sin"}, {"^"}, {"*","/"}, {"+","-"}}; 
     public static TreeMap<String, BiFunction<Integer, Integer, Double>> operators = new TreeMap<>();
     
     static int charskip = 200;
 
     public static void init(){
+        Engine.operators.put("sin", Engine::sin);
         Engine.operators.put("^", Engine::exponent);
         Engine.operators.put("*", Engine::multiply);
         Engine.operators.put("/", Engine::divide);
@@ -25,6 +26,12 @@ public class Engine {
         Engine.operators.put("-", Engine::subtract);
     }
 
+    static double sin(int a, int b){
+        double num2 = numbers.get(b);
+        double out = Math.sin(num2);
+        numbers.add(out);
+        return out;
+    }
     static double multiply(int a, int b){
         double num1 = numbers.get(a);
         double num2 = numbers.get(b);

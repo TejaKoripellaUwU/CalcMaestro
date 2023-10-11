@@ -7,14 +7,9 @@ public class App{
     public static void main(String[] args) throws Exception {
         Engine.init();
         Calculator calc = new Calculator();
-
-        //ArrayList<Double> result = calc.range2d(".002*x", 100, 0, 50000);
-
-        // for (String[] ops : Engine.pemdasops){
-        //     System.out.println(Engine.pemdasops[1][1]);
-        // }
-
-        System.out.println(calc.answer(""));
-
+        
+  
+        ArrayList<Double> result = calc.range2d("sin(.1*x)*25+250", .01, 0, 500);
+        Canvas canvas = new Canvas(result);
     }
 }

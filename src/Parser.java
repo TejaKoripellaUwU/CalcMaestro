@@ -1,12 +1,10 @@
 import java.util.ArrayList;
-import java.util.TreeMap;
 import java.util.concurrent.Callable;
 import java.util.function.BiFunction;
 
 public class Parser {
 
     private static int charskip = 200;
-
 
     public static char intToChar(int input){
         //skipping to avoid digits and operators
@@ -17,7 +15,6 @@ public class Parser {
         //skipping to avoid digits and operators
         return (int) (input-charskip);
     }
-
 
     public String pemdasSimplify(String input, ArrayList<Callable<Double>> outSequence){
         if (input.length() == 1){
@@ -38,7 +35,6 @@ public class Parser {
                 break;
             }
         }
-
     
         if(parenStart != -1 && parenEnd != -1){
             if(Math.abs(parenEnd - parenStart) <= 2){
@@ -49,19 +45,17 @@ public class Parser {
         }
 
         int offset = parenStart+1;
-
+        
         for (String[] ops : Engine.pemdasops){
             
             int earliestOpIndex = Integer.MAX_VALUE;
             String operator = "";
-
 
             for (String op : ops){
                 int opindex = working.indexOf(op);
                 if (opindex == -1){
                     continue;
                 }
-
                 if (opindex < earliestOpIndex){
                     earliestOpIndex = opindex;
                     operator = op;
@@ -77,7 +71,6 @@ public class Parser {
 
             int firstNumIndex = operator.length() > 1 ? working.indexOf(operator) : working.indexOf(operator)-1;
             int secondNumIndex = working.indexOf(operator)+operator.length();
-            
             if(firstNumIndex != -2 && secondNumIndex != 0){
                 
                 //keep adding expression results? to list and then access them based on counter?
@@ -98,8 +91,6 @@ public class Parser {
                 return this.pemdasSimplify(full, outSequence);
             }
         }
-
-
         return this.pemdasSimplify(full, outSequence);
     }
 
@@ -141,9 +132,6 @@ public class Parser {
                     output += expression.substring(start, i-currentNum.length());
                 }
             }
-
-            
-
         }
 
         return output;
