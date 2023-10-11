@@ -10,11 +10,11 @@ public class App{
 
         //ArrayList<Double> result = calc.range2d(".002*x", 100, 0, 50000);
 
-        // for (char[] ops : Engine.pemdasops){
-        //     System.out.println(Engine.pemdasops[0]);
+        // for (String[] ops : Engine.pemdasops){
+        //     System.out.println(Engine.pemdasops[1][1]);
         // }
 
-        System.out.println(calc.answer("100/5*10"));
+        System.out.println(calc.answer(""));
 
     }
 }
