@@ -12,12 +12,19 @@ public class Engine {
     public static ArrayList<Integer> variableIndices = new ArrayList<>();
 
 
-    public static String[][] pemdasops = new String[][] {{"^"}, {"*","/"}, {"+","-"}}; 
+    public static String[][] pemdasops = new String[][] {{"sin","cos","tan","arcsin","arccos","arctan","sqrt"},{"^"}, {"*","/"}, {"+","-"}}; 
     public static TreeMap<String, BiFunction<Integer, Integer, Double>> operators = new TreeMap<>();
     
     static int charskip = 200;
 
     public static void init(){
+        Engine.operators.put("sin", Engine::sine);
+        Engine.operators.put("cos", Engine::cosine);
+        Engine.operators.put("tan", Engine::tangent);
+        Engine.operators.put("arcsin", Engine::arcsine);
+        Engine.operators.put("arcos", Engine::arccosine);
+        Engine.operators.put("arctan", Engine::arctangent);
+        Engine.operators.put("sqrt", Engine::squareroot);
         Engine.operators.put("^", Engine::exponent);
         Engine.operators.put("*", Engine::multiply);
         Engine.operators.put("/", Engine::divide);
@@ -25,6 +32,51 @@ public class Engine {
         Engine.operators.put("-", Engine::subtract);
     }
 
+    static double sine(int a, int b){
+        double num2 = numbers.get(b);
+        double out = Math.sin(num2);
+        numbers.add(out);
+        return out;
+    }
+
+      static double cosine(int a, int b){
+        double num2 = numbers.get(b);
+        double out = Math.cos(num2);
+        numbers.add(out);
+        return out;
+    }
+
+      static double tangent(int a, int b){
+        double num2 = numbers.get(b);
+        double out = Math.tan(num2);
+        numbers.add(out);
+        return out;
+    }
+        static double arcsine(int a, int b){
+        double num2 = numbers.get(b);
+        double out = Math.asin(num2);
+        numbers.add(out);
+        return out;
+    }
+        static double arccosine(int a, int b){
+        double num2 = numbers.get(b);
+        double out = Math.acos(num2);
+        numbers.add(out);
+        return out;
+    }
+    static double arctangent(int a, int b){
+        double num2 = numbers.get(b);
+        double out = Math.atan(num2);
+        numbers.add(out);
+        return out;
+    }
+    static double squareroot(int a, int b){
+        double num2 = numbers.get(b);
+        double out = Math.sqrt(num2);
+        numbers.add(out);
+        return out;
+    }
+    //functions end
     static double multiply(int a, int b){
         double num1 = numbers.get(a);
         double num2 = numbers.get(b);

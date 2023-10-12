@@ -8,13 +8,8 @@ public class App{
         Engine.init();
         Calculator calc = new Calculator();
 
-        //ArrayList<Double> result = calc.range2d(".002*x", 100, 0, 50000);
+        ArrayList<Double> result = calc.range2d(".002*x", 100, 0, 50000);
 
-        // for (String[] ops : Engine.pemdasops){
-        //     System.out.println(Engine.pemdasops[1][1]);
-        // }
-
-        System.out.println(calc.answer(""));
-
+        System.out.println(calc.answer("1+sqrt(4)"));
     }
 }
