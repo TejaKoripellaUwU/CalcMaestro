@@ -115,7 +115,10 @@ public class Parser {
                 }
                 else if(currentChar == 'x' || currentChar == 'z'){
                     Engine.numbers.add(0.0);
-                    Engine.variableIndices.add(Engine.numbers.size()-1);
+                    if(currentChar == 'x')
+                        Engine.xIndices.add(Engine.numbers.size()-1);
+                    else
+                        Engine.zIndices.add(Engine.numbers.size()-1);
                     output += expression.substring(start, i) + intToChar(Engine.numbers.size()-1);
                     currentNum = "";
                     start = i+1;
