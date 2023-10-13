@@ -15,21 +15,27 @@ public class Engine {
     public static ArrayList<Integer> zIndices = new ArrayList<>();
 
 
-    public static String[][] pemdasops = new String[][] {{"sin", "cos"}, {"^"}, {"*","/"}, {"+","-"}}; 
+    public static String[][] pemdasops = new String[][] {{"sin", "cos", "sqrt"}, {"^"}, {"*","/"}, {"+","-"}}; 
     public static TreeMap<String, BiFunction<Integer, Integer, Double>> operators = new TreeMap<>();
     
     static int charskip = 200;
 
     public static void init(){
         Engine.operators.put("sin", Engine::sin);
-        Engine.operators.put("cos", Engine::sin);
+        Engine.operators.put("cos", Engine::cos);
+        Engine.operators.put("sqrt", Engine::sqrt);
         Engine.operators.put("^", Engine::exponent);
         Engine.operators.put("*", Engine::multiply);
         Engine.operators.put("/", Engine::divide);
         Engine.operators.put("+", Engine::add);
         Engine.operators.put("-", Engine::subtract);
     }
-
+    static double sqrt(int a, int b){
+        double num2 = numbers.get(b);
+        double out = Math.sqrt(num2);
+        numbers.add(out);
+        return out;
+    }
     static double sin(int a, int b){
         double num2 = numbers.get(b);
         double out = Math.sin(num2);

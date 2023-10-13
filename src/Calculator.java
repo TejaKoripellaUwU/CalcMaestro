@@ -41,7 +41,7 @@ public class Calculator {
     }
 
     public double[][] range3d(String expression, double interval, double domainStart, double domainEnd) throws Exception {
-        int size = (int) (domainEnd - domainStart + 1) / (int) interval;
+        int size = (int) ((domainEnd - domainStart) / interval) + 1;
         double[][] result = new double[size][size];
         String coded = parser.findNumbers(expression);
 
