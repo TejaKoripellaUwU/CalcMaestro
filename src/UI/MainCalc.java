@@ -4,24 +4,26 @@ import javax.swing.JFrame;
 
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class MainCalc extends JFrame{
     private JTextField txt;
     private GridBagLayout GridBagLayoutGrid;
     private GridBagConstraints gbc;
+    private JPanel numPanel = new JPanel();
 
     public MainCalc(){
         super();
         GridBagLayoutGrid = new GridBagLayout();  
         gbc = new GridBagConstraints();  
         setLayout(GridBagLayoutGrid);  
-        setTitle("Cuckulator");  
+        setTitle("Calculator");  
 
         GridBagLayout layout = new GridBagLayout();  
         this.setLayout(layout);  
         
-        setSize(300, 300);  
+        setSize(1000, 800);  
         setPreferredSize(getSize());  
         setVisible(true);  
         setDefaultCloseOperation(EXIT_ON_CLOSE);  
@@ -32,8 +34,10 @@ public class MainCalc extends JFrame{
             gbc.gridx = i%3;
             gbc.gridy = (int) i/3;
             gbc.fill = GridBagConstraints.HORIZONTAL;
+            
             this.add(new JButton(Integer.toString(i)),gbc);
         }
+    
 
     }
 }
