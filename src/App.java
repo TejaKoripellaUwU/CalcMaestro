@@ -12,6 +12,6 @@ public class App{
 
         ArrayList<Double> result = calc.range2d(".002*x", 100, 0, 50000);
 
-        System.out.println(result);
+        System.out.println(calc.answer("1+sqrt(4)"));
     }
 }

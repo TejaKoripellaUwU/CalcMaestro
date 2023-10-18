@@ -28,6 +28,11 @@ public class MainCalc extends JFrame{
         setVisible(true);  
         setDefaultCloseOperation(EXIT_ON_CLOSE);  
         createNums();
+<<<<<<< HEAD
+=======
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+>>>>>>> trig_test
         }
     private void createNums(){
         for (int i = 0; i<10;i++){
