@@ -1,4 +1,3 @@
-package UI;
 import javax.swing.JButton;
 import java.awt.*;
 import java.awt.event.*;
@@ -34,17 +33,20 @@ public class MainCalc{
     public void show(){
         window.setVisible(!(window.isVisible()));  
     }
-
-    public class add_text implements ActionListener {
-        private String key;
-        public add_text(String s){
-            key = s;
+    public static class Handler {
+        private String curEquation;
+        
+        public ActionListener addString(String eq){
+            return (ActionEvent e)->{
+                curEquation += eq;
+                System.out.println(curEquation)
+            }
         }
-        public void actionPerformed(ActionEvent e) {
-            current_expression = current_expression + key;
-            System.out.println(current_expression);
+        public ActionListener returnResult(){
+            return (ActionEvent e)->{System.out.println(calc.answer())};
         }
     }
+
     private void decorator(){
         String[] ops= {"+","-","*","/"};
         for (int i = 0; i<ops.length;i++){
@@ -52,7 +54,7 @@ public class MainCalc{
             gbc.gridy = (int) i/4;
             gbc.fill = GridBagConstraints.HORIZONTAL;
             JButton button = new JButton(ops[i]);
-            button.addActionListener(new add_text(button.getText()));
+            button.addActionListener(Handler.addString(ops[i]));
             window.add(button);
 
         }
@@ -61,9 +63,10 @@ public class MainCalc{
             gbc.gridy = (int) i/4;
             gbc.fill = GridBagConstraints.HORIZONTAL;
             JButton button = new JButton(Integer.toString(i-3));
-            button.addActionListener(new add_text(button.getText()));
+            button.addActionListener(Handler.addString(Integer.toString(i-3)));
             window.add(button,gbc);
         }
+
  
 
     }
