@@ -43,7 +43,15 @@ public class MainCalc{
             };
         }
         public static ActionListener returnResult(){
-            return (ActionEvent e)->{System.out.println(calc.answer(curEquation));};
+            
+            System.out.println(curEquation);
+            System.out.println('t');
+            return (ActionEvent e)->{
+                System.out.println(e.getActionCommand());
+                System.out.println(curEquation);
+                System.out.println("curEquation");
+                System.out.println(calc.answer(curEquation));
+            };
         }
     }
 
@@ -66,7 +74,11 @@ public class MainCalc{
             button.addActionListener(Handler.addString(Integer.toString(i-3)));
             window.add(button,gbc);
         } 
-      
+        JButton button = new JButton("="); 
+        button.addActionListener(Handler.returnResult());
+        gbc.gridx += 1; 
+        gbc.gridy +=  1;
+        window.add(button,gbc);
 
  
 
