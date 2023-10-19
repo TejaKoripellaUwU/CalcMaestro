@@ -6,7 +6,7 @@ public class Launcher {
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run(){
-                UI.MainCalc main = new UI.MainCalc();
+                MainCalc main = new MainCalc(new Calculator());
                 main.show();
             }
         });

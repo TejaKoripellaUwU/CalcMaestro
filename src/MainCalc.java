@@ -15,7 +15,7 @@ public class MainCalc{
     private GridBagLayout GridBagLayoutGrid;
     private GridBagConstraints gbc;
     private JPanel numPanel = new JPanel();
-    private static Calculator calc;
+    private Calculator calc;
 
     public MainCalc(Calculator c){
         calc = c;
@@ -33,20 +33,17 @@ public class MainCalc{
     public void show(){
         window.setVisible(!(window.isVisible()));  
     }
-    public static class Handler {
-        private static String curEquation = "";
-        
-        public static ActionListener addString(String eq){
-            return (ActionEvent e)->{
-                curEquation += eq;
-                System.out.println(curEquation);
-            };
+
+    public class add_text implements ActionListener {
+        private String key;
+        public add_text(String s){
+            key = s;
         }
-        public static ActionListener returnResult(){
-            return (ActionEvent e)->{System.out.println(calc.answer(curEquation));};
+        public void actionPerformed(ActionEvent e) {
+            current_expression = current_expression + key;
+            System.out.println(current_expression);
         }
     }
-
     private void decorator(){
         String[] ops= {"+","-","*","/"};
         for (int i = 0; i<ops.length;i++){
@@ -54,8 +51,8 @@ public class MainCalc{
             gbc.gridy = (int) i/4;
             gbc.fill = GridBagConstraints.HORIZONTAL;
             JButton button = new JButton(ops[i]);
-            button.addActionListener(Handler.addString(ops[i]));
-            window.add(button,gbc);
+            button.addActionListener(new add_text(button.getText()));
+            window.add(button);
 
         }
         for (int i = 4; i<13;i++){
@@ -63,11 +60,9 @@ public class MainCalc{
             gbc.gridy = (int) i/4;
             gbc.fill = GridBagConstraints.HORIZONTAL;
             JButton button = new JButton(Integer.toString(i-3));
-            button.addActionListener(Handler.addString(Integer.toString(i-3)));
+            button.addActionListener(new add_text(button.getText()));
             window.add(button,gbc);
-        } 
-      
-
+        }
  
 
     }
