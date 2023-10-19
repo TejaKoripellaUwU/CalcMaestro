@@ -47,10 +47,8 @@ public class MainCalc{
             System.out.println(curEquation);
             System.out.println('t');
             return (ActionEvent e)->{
-                System.out.println(e.getActionCommand());
-                System.out.println(curEquation);
-                System.out.println("curEquation");
                 System.out.println(calc.answer(curEquation));
+               curEquation = "";
             };
         }
     }
@@ -79,8 +77,5 @@ public class MainCalc{
         gbc.gridx += 1; 
         gbc.gridy +=  1;
         window.add(button,gbc);
-
- 
-
     }
 }
