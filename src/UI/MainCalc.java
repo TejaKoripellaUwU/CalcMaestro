@@ -16,8 +16,10 @@ public class MainCalc{
     private GridBagLayout GridBagLayoutGrid;
     private GridBagConstraints gbc;
     private JPanel numPanel = new JPanel();
+    private Calculator calc;
 
-    public MainCalc(){
+    public MainCalc(Calculator c){
+        calc = c;
         window = new JFrame("Calculator");
         window.setSize(1000, 800);  
         window.setPreferredSize(window.getSize()); 
@@ -53,7 +55,6 @@ public class MainCalc{
             button.addActionListener(new add_text(button.getText()));
             window.add(button);
 
->>>>>>> trig_test
         }
         for (int i = 4; i<13;i++){
             gbc.gridx = i%4;

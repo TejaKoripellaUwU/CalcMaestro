@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 import java.util.function.BiFunction;
-
 public class Calculator {
 
     Parser parser;

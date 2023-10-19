@@ -1,9 +1,8 @@
 import javax.swing.SwingUtilities;
-public class launcher {
+public class Launcher {
 
     public static void main(String[] args) {
         //thread safety
-        Calculator calc = new Calculator();
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run(){
