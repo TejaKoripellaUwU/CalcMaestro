@@ -8,17 +8,12 @@ public class App{
         Engine.init();
         Calculator calc = new Calculator();
         
-        double interval = 2;
+        // System.out.println(calc.answer("1+1"));
+        double interval = 5;
 
-        //double[][] result = calc.range3d("sin(.01*x)*25+sin(.01*z)*25+250", 1, -200, 200);
-        double[][] result = calc.range3d("sqrt(150^2-x^2-z^2)+500", interval, -200, 200);
-        //double[][] result = calc.range3d("(.1*x)^2", 1, -200, 200);
-        //double[][] result = calc.range3d("0*x+(.1*z)^2+100", 1, -200, 200);
+        double[][] result = calc.range3d("sqrt(150^2-x^2-z^2)", interval, -200, 200);
 
-        Canvas canvas = new Canvas(result, interval, -200, 200);
-        while(true){
-            Thread.sleep(100);
-            canvas.paintagain();
-        }
+        Canvas canvas = new Canvas();
+        canvas.realtimeGraph(result, interval, -200, 200);
     }
 }

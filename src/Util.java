@@ -36,8 +36,6 @@ public class Util {
         double[] result = mulMatrix(zMatrix, a);
         result = mulMatrix(xMatrix, result);
 
-        //result = mulMatrix(rotationMatrix, a);
-
         return result;
     }
 
