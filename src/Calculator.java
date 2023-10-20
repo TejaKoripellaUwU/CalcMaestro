@@ -42,7 +42,7 @@ public class Calculator {
 
     public double[][] range3d(String expression, double interval, double domainStart, double domainEnd) throws Exception {
         int size = (int) ((domainEnd - domainStart) / interval) + 1;
-        double[][] result = new double[size][size];
+        double[][] result = new double[3][size*size];
         String coded = parser.findNumbers(expression);
 
         int ogsize = Engine.numbers.size();
@@ -51,9 +51,9 @@ public class Calculator {
 
         Engine.numbers = new ArrayList<Double>(Engine.numbers.subList(0, ogsize));
 
-        int outerIndex = 0;
+
+        int resultIndex = 0;
         for (double i = domainStart; i <= domainEnd; i+=interval){
-            int innerIndex = 0;
             for (double k = domainStart; k <= domainEnd; k+=interval){
                 double ans = 0;
                 Engine.numbers = new ArrayList<Double>(Engine.numbers.subList(0, ogsize));
@@ -67,10 +67,11 @@ public class Calculator {
                 for(Callable<Double> func : seq){
                     ans = func.call();
                 }
-                result[outerIndex][innerIndex] = ans;
-                innerIndex += 1;
+                result[0][resultIndex] = i;
+                result[1][resultIndex] = k;
+                result[2][resultIndex] = Double.isNaN(ans) ? 0 : ans;
+                resultIndex += 1;
             }
-            outerIndex += 1;
         }
 
         return result;
