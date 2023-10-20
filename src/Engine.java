@@ -15,7 +15,7 @@ public class Engine {
     public static ArrayList<Integer> zIndices = new ArrayList<>();
 
 
-    public static String[][] pemdasops = new String[][] {{"sin", "cos", "sqrt"}, {"^"}, {"*","/"}, {"+","-"}}; 
+    public static String[][] pemdasops = new String[][] {{"sin", "cos", "sqrt", "abs"}, {"^"}, {"*","/"}, {"+","-"}}; 
     public static TreeMap<String, BiFunction<Integer, Integer, Double>> operators = new TreeMap<>();
     
     static int charskip = 200;

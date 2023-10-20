@@ -113,6 +113,12 @@ public class Parser {
                     currentNum = "";
                     start = i+2;
                 }
+                if(currentChar == 'e'){
+                    Engine.numbers.add(Math.E);
+                    output += expression.substring(start, i) + intToChar(Engine.numbers.size()-1);
+                    currentNum = "";
+                    start = i+1;
+                }
                 else if(currentChar == 'x' || currentChar == 'z'){
                     Engine.numbers.add(0.0);
                     if(currentChar == 'x')

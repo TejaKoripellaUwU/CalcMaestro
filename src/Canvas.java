@@ -72,7 +72,8 @@ public class Canvas extends JFrame implements ActionListener{
                 green = green > 255 ? 255 : green;
 
                 g2D.setColor(new Color((int)((this.points[1][k]-domainStart)/domain*255), green, (int)((this.points[0][k]-domainStart)/domain*255), 255));
-                g2D.fillRect((int)(p[0][k]+500), 1000 - ((int)p[2][k]+500), 3, 3);
+                int dim = 3;
+                g2D.fillRect((int)(p[0][k]+500-dim/2), 1000 - ((int)p[2][k]+500+dim/2), dim, dim);
             }
         }
 
@@ -101,8 +102,10 @@ public class Canvas extends JFrame implements ActionListener{
         //     }
         // }
         
-
-        g2D.drawString(""+1000/(time - prevTime), 100, 100);
+        if((time-prevTime) != 0){
+            g2D.drawString(""+1000/(time - prevTime), 100, 100);
+        }    
+        
     }
 
     public void paint(Graphics g){
