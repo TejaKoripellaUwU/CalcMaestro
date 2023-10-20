@@ -1,3 +1,8 @@
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 public class Util {
 
     static double[][] xMatrix = new double[3][3];
@@ -38,7 +43,7 @@ public class Util {
     }
     
 
-    public static double[][] rotate(double[][] a, double yaw, double pitch, double roll){
+    public static double[][] rotate(double[][] a, double yaw, double pitch, double roll) throws InterruptedException, ExecutionException{
 
         zMatrix[0][0] = Math.cos(roll);
         zMatrix[0][1] = -Math.sin(roll);
@@ -79,4 +84,55 @@ public class Util {
         }
         return result;
     }
+
+    public static double[][] mulMatrixFast(double[][] rotator, double[][] tomul) throws InterruptedException, ExecutionException{
+        int numThreads = Runtime.getRuntime().availableProcessors();
+        ExecutorService executor = Executors.newFixedThreadPool(numThreads);
+
+        double[][] result = new double[rotator.length][tomul[0].length];
+
+        Future<?>[] futures = new Future[rotator.length];
+        for(int i = 0; i < rotator.length; i++){
+
+            futures[i] = executor.submit(new MatrixCellMultiplier(rotator, tomul, result, i, 0));
+            
+        }
+
+        for(int i = 0; i < rotator.length; i++){
+            futures[i].get();
+
+        }
+
+        executor.shutdown();
+
+        return result;
+    }
+}
+
+class MatrixCellMultiplier implements Runnable{
+
+    double[][] matrixA;
+    double[][] matrixB;
+    double[][] result;
+    int i;
+    int a;
+
+    public MatrixCellMultiplier(double[][] a, double[][] b, double[][] res, int r, int c){
+        this.matrixA = a;
+        this.matrixB = b;
+        this.result = res;
+        this.i = r;
+        this.a = c;
+    }
+
+    @Override
+    public void run() {
+
+        for(int j = 0; j < result[0].length; j++){
+            this.result[i][j] = matrixA[i][0] * matrixB[0][j] + matrixA[i][1] * matrixB[1][j] + matrixA[i][2] * matrixB[2][j];
+        }
+
+
+    }
+
 }

@@ -1,5 +1,6 @@
 import java.lang.ref.Reference;
 import java.util.ArrayList;
+import java.util.Timer;
 import java.util.concurrent.Callable;
 
 import javax.print.attribute.standard.ColorSupported;
@@ -11,12 +12,20 @@ public class App{
         Util.init();
         Calculator calc = new Calculator();
         
-        
         double interval = 1;
-
-        double[][] result = calc.range3d("sqrt(150^2-x^2-z^2)", interval, -200, 200);
-
-        double[][] done = Util.mulMatrix(Util.xMatrix, result);
+        double domainStart = -200;
+        double domainEnd = 200;
+        double[][] result = calc.range3d("sin(.1*x)*cos(.1*z)*25", interval, domainStart, domainEnd);
+        // double[][] done = new double[1][1];
+        // System.out.println("Starting Fast!");
+        // long startTime = System.currentTimeMillis();
+        // done = Util.mulMatrixFast(Util.xMatrix, result);
+        // long endTime = System.currentTimeMillis();
+        // System.out.println("Fast Done | Starting Slow! " + (endTime - startTime));
+        // startTime = System.currentTimeMillis();
+        // done = Util.mulMatrix(Util.xMatrix, result);
+        // endTime = System.currentTimeMillis();
+        // System.out.println("Slow Done " + (endTime - startTime));
 
         //System.out.println(don);
 
@@ -44,6 +53,6 @@ public class App{
 
 
         Canvas canvas = new Canvas();
-        canvas.realtimeGraph(result, interval, -200, 200);
+        canvas.realtimeGraph(result, interval, domainStart, domainEnd);
     }
 }

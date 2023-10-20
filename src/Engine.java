@@ -24,11 +24,18 @@ public class Engine {
         Engine.operators.put("sin", Engine::sin);
         Engine.operators.put("cos", Engine::cos);
         Engine.operators.put("sqrt", Engine::sqrt);
+        Engine.operators.put("abs", Engine::abs);
         Engine.operators.put("^", Engine::exponent);
         Engine.operators.put("*", Engine::multiply);
         Engine.operators.put("/", Engine::divide);
         Engine.operators.put("+", Engine::add);
         Engine.operators.put("-", Engine::subtract);
+    }
+    static double abs(int a, int b){
+        double num2 = numbers.get(b);
+        double out = Math.abs(num2);
+        numbers.add(out);
+        return out;
     }
     static double sqrt(int a, int b){
         double num2 = numbers.get(b);
