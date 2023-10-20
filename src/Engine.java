@@ -12,7 +12,7 @@ public class Engine {
     public static ArrayList<Integer> variableIndices = new ArrayList<>();
 
 
-    public static String[][] pemdasops = new String[][] {{"sin","cos","tan","arcsin","arccos","arctan","sqrt","abs","ln","log"},{"^"}, {"*","/"}, {"+","-"}}; 
+    public static String[][] pemdasops = new String[][] {{"sin","cos","tan","arcsin","arccos","arctan","sqrt","abs","ln"},{"^"}, {"*","/"}, {"+","-"}}; 
     public static TreeMap<String, BiFunction<Integer, Integer, Double>> operators = new TreeMap<>();
     
     static int charskip = 200;
@@ -25,14 +25,14 @@ public class Engine {
         Engine.operators.put("arcos", Engine::arccosine);
         Engine.operators.put("arctan", Engine::arctangent);
         Engine.operators.put("sqrt", Engine::squareroot);
+        Engine.operators.put("abs", Engine::absolute);
+        Engine.operators.put("ln", Engine::ln);
         Engine.operators.put("^", Engine::exponent);
         Engine.operators.put("*", Engine::multiply);
         Engine.operators.put("/", Engine::divide);
         Engine.operators.put("+", Engine::add);
         Engine.operators.put("-", Engine::subtract);
-        Engine.operators.put("abs", Engine::absolute);
-     //   Engine.operators.put("-", Engine::log);
-        Engine.operators.put("-", Engine::subtract);
+
     }
 
     static double sine(int a, int b){
