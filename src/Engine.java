@@ -9,7 +9,10 @@ public class Engine {
     public static ArrayList<Double> parameters = new ArrayList<>();
 
     public static ArrayList<Double> numbers = new ArrayList<>();
+
     public static ArrayList<Integer> variableIndices = new ArrayList<>();
+    public static ArrayList<Integer> xIndices = new ArrayList<>();
+    public static ArrayList<Integer> zIndices = new ArrayList<>();
 
 
     public static String[][] pemdasops = new String[][] {{"sin","cos","tan","arcsin","arccos","arctan","sqrt","abs","ln"},{"^"}, {"*","/"}, {"+","-"}}; 
