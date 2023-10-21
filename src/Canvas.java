@@ -72,28 +72,34 @@ public class Canvas extends JFrame implements ActionListener{
                 int green = (int)((this.points[2][k]-min)/range*255);
                 green = green > 255 ? 255 : green;
 
-                g2D.setColor(new Color((int)((this.points[1][k]-domainStart)/domain*255), green, (int)((this.points[0][k]-domainStart)/domain*255), 10));
+                g2D.setColor(new Color((int)((this.points[1][k]-domainStart)/domain*255), green, (int)((this.points[0][k]-domainStart)/domain*255)));
                 int dim = 3;
-                g2D.fillRect((int)(p[0][k]+500-dim/2), 1000 - ((int)p[2][k]+500+dim/2), dim, dim);
+                //perspective?
+                g2D.fillRect((int)(p[0][k]*((50/(-p[1][k]+500)))+500-dim/2), 1000 - ((int)(p[2][k]*((50/(-p[1][k]+500)))+500+dim/2)), dim, dim);
+            
+                //ortho?
+                //g2D.fillRect((int)(p[0][k]+500-dim/2), 1000 - ((int)(p[2][k]+500+dim/2)), dim, dim);
             }
         }
 
         //draw x axis Blue
         double[] x = Util.rotate(new double[]{200, 0, 0}, angle[1]*(Math.PI/180), -angle[1] * (Math.PI/180), -angle[2] * (Math.PI/180));
-        g2D.setColor(new Color(0, 0, 255, 255));
+        g2D.setColor(new Color(100, 100, 255, 255));
         g2D.drawLine((int)0+500, 1000 - ((int) 0+500), (int)x[0]+500, 1000 - ((int) x[2]+500));
+        g2D.drawString("X", (int)x[0]+500, 1000 - ((int) x[2]+500));
 
         //draw z axis Red
         double[] z = Util.rotate(new double[]{0, 200, 0}, angle[1]*(Math.PI/180), -angle[1] * (Math.PI/180), -angle[2] * (Math.PI/180));
         g2D.setColor(new Color(255, 0, 0, 255));
         g2D.drawLine((int)0+500, 1000 - ((int) 0+500), (int)z[0]+500, 1000 - ((int) z[2]+500));
+        g2D.drawString("Z", (int)z[0]+500, 1000 - ((int) z[2]+500));
 
         //draw y axis Green
         double[] y = Util.rotate(new double[]{0, 0, 200}, angle[1]*(Math.PI/180), -angle[1] * (Math.PI/180), -angle[2] * (Math.PI/180));
         g2D.setColor(new Color(0, 255, 0, 255));
         g2D.drawLine((int)0+500, 1000 - ((int) 0+500), (int)y[0]+500, 1000 - ((int) y[2]+500));
-
-        
+        g2D.drawString("Y", (int)y[0]+500, 1000 - ((int) y[2]+500));
+            
         if((time-prevTime) != 0){
             g2D.drawString(""+1000/(time - prevTime), 100, 100);
         }    

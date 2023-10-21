@@ -43,7 +43,17 @@ public class Calculator {
     public double[][] range3d(String expression, double interval, double domainStart, double domainEnd, String mode) throws Exception {
         double acceptedTolerance = .1;
         
+        boolean x, y, z; x=false; y=false; z=false;
 
+        if(expression.contains("x")){
+            x = true;
+        }
+        if(expression.contains("y")){
+            y = true;
+        }
+        if(expression.contains("z")){
+            z = true;
+        }
         
         int size = (int) ((domainEnd - domainStart) / interval) + 1;
 
@@ -80,16 +90,32 @@ public class Calculator {
         double diff = 1 / lr;
         double jrate = interval;
 
-        double prevLeft = 0;
-        double prevRight = 0;
 
-        for (double i = domainStart; i <= domainEnd; i+=interval){
-            for (double k = domainStart; k <= domainEnd; k+=interval){
+        double iInterval = interval;
+        double kInterval = interval;
+
+
+        double xDomainStart = domainStart;
+        double zDomainStart = domainStart;
+
+        double xDomainEnd = domainEnd;
+        double zDomainEnd = domainEnd;
+
+        if(!x){
+            xDomainEnd = 0;
+            xDomainStart = 0;
+        }
+
+        if(!z){
+            zDomainEnd = 0;
+            zDomainStart = 0;
+        }
+
+        for (double i = xDomainStart; i <= xDomainEnd; i+=iInterval){
+            for (double k = zDomainStart; k <= zDomainEnd; k+=kInterval){
 
                 diff = 1;
                 jrate = interval;
-                prevLeft = 0;
-                prevRight = 0;
 
                 for(double j = domainStart; j <= domainEnd; j+=jrate){
 
@@ -102,11 +128,11 @@ public class Calculator {
                     for(int index : Engine.xIndices){
                         Engine.numbers.set(index, i); //i
                     }
-                    for(int l : Engine.zIndices){
-                        Engine.numbers.set(l, k); //k
+                    for(int index : Engine.zIndices){
+                        Engine.numbers.set(index, k); //k
                     }
-                    for(int l : Engine.yIndices){
-                        Engine.numbers.set(l, j);
+                    for(int index : Engine.yIndices){
+                        Engine.numbers.set(index, j); //j
                     }
                     for(Callable<Double> func : leftseq){
                         leftans = func.call();
@@ -115,16 +141,9 @@ public class Calculator {
                         rightans = func.call();
                     }
 
-
-
-                
-
                     diff = Math.abs(rightans - leftans);
                     jrate = diff*.001;
         
-
-
-                    //System.out.println(jrate);
 
                     //jrate = 1;
                     if(diff <= acceptedTolerance){
@@ -133,18 +152,7 @@ public class Calculator {
                         resultList.get(2).add(j);
                         jrate = interval;
                     }
-                    // jrate = interval;
-                    // if(jrate < interval/10){
-                    //     jrate = interval/10;
-                    // }
 
-                    // if(jrate <= acceptedTolerance ){
-                    //     jrate = interval;
-                    // }
-                    //System.out.println(jrate);
-                    //System.out.println(jrate);
-                    prevLeft = leftans;
-                    prevRight = rightans;
                 } 
             }
         }
