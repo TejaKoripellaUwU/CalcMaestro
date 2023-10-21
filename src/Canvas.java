@@ -71,7 +71,7 @@ public class Canvas extends JFrame implements ActionListener{
                 int green = (int)((this.points[2][k]-min)/range*255);
                 green = green > 255 ? 255 : green;
 
-                g2D.setColor(new Color((int)((this.points[1][k]-domainStart)/domain*255), green, (int)((this.points[0][k]-domainStart)/domain*255), 255));
+                g2D.setColor(new Color((int)((this.points[1][k]-domainStart)/domain*255), green, (int)((this.points[0][k]-domainStart)/domain*255), 10));
                 int dim = 3;
                 g2D.fillRect((int)(p[0][k]+500-dim/2), 1000 - ((int)p[2][k]+500+dim/2), dim, dim);
             }
@@ -92,15 +92,6 @@ public class Canvas extends JFrame implements ActionListener{
         g2D.setColor(new Color(0, 255, 0, 255));
         g2D.drawLine((int)0+500, 1000 - ((int) 0+500), (int)y[0]+500, 1000 - ((int) y[2]+500));
 
-        // for(int i = 0; i < this.points.length; i++){
-        //     for(int k = 0; k < this.points[0].length; k++){
-        //         if (this.points[2][k] == 0.0)
-        //             continue;
-        //         System.out.println((int)((this.points[2][k]-domainStart)/domain*255));
-        //         g2D.setColor(new Color((int)((this.points[1][k]-domainStart)/domain*255), (int)((this.points[2][k]+min)/range*255), (int)((this.points[0][k]-domainStart)/domain*255), 255));
-        //         g2D.fillRect((int)points[0][k]*20+500, 1000 - ((int)points[2][k]*20+500), 3, 3);
-        //     }
-        // }
         
         if((time-prevTime) != 0){
             g2D.drawString(""+1000/(time - prevTime), 100, 100);

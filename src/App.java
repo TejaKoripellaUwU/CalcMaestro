@@ -12,11 +12,10 @@ public class App{
         Util.init();
         Calculator calc = new Calculator();
         
-        double interval = 10;
-        double domainStart = -200;
-        double domainEnd = 200;
-        double[][] result1 = calc.range3d("sqrt(150^2-x^2-z^2)", interval, domainStart, domainEnd);
-        //double[][] result2 = calc.range3d("(0-1)*sqrt(150^2-x^2-z^2)", interval, domainStart, domainEnd);
+        double interval = 3;
+        double domainStart = -150;
+        double domainEnd = 150;
+        double[][] result1 = calc.range3d("((.01*x)^2+(9/4)*((.01*y)^2)+(.01*z)^2-1)^3-((.01*x)^2)*((.01*z)^3)-(9/200)*((.01*y)^2)*((.01*z)^3)=0", interval, domainStart, domainEnd, "");
 
 
         Canvas canvas = new Canvas();
