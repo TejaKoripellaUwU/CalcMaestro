@@ -122,9 +122,7 @@ public class Calculator {
                     diff = Math.abs(rightans - leftans);
                     jrate = diff*.001;
         
-                    if(jrate < 1){
-                        jrate = interval;
-                    }
+
 
                     //System.out.println(jrate);
 
@@ -135,6 +133,10 @@ public class Calculator {
                         resultList.get(2).add(j);
                         jrate = interval;
                     }
+                    // jrate = interval;
+                    // if(jrate < interval/10){
+                    //     jrate = interval/10;
+                    // }
 
                     // if(jrate <= acceptedTolerance ){
                     //     jrate = interval;

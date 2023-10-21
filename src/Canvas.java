@@ -52,7 +52,8 @@ public class Canvas extends JFrame implements ActionListener{
                 
         Graphics2D g2D = (Graphics2D)g;
 
-
+        g2D.setColor(new Color(0, 0, 0));
+        g2D.fillRect(0, 0, 1000, 1000);
 
 
         double[][] p = new double[1][1];
