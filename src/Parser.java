@@ -119,10 +119,12 @@ public class Parser {
                     currentNum = "";
                     start = i+1;
                 }
-                else if(currentChar == 'x' || currentChar == 'z'){
+                else if(currentChar == 'x' || currentChar == 'z' || currentChar == 'y'){
                     Engine.numbers.add(0.0);
                     if(currentChar == 'x')
                         Engine.xIndices.add(Engine.numbers.size()-1);
+                    else if(currentChar == 'y')
+                        Engine.yIndices.add(Engine.numbers.size()-1);
                     else
                         Engine.zIndices.add(Engine.numbers.size()-1);
                     output += expression.substring(start, i) + intToChar(Engine.numbers.size()-1);
