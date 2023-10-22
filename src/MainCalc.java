@@ -80,10 +80,25 @@ public class MainCalc{
             
             System.out.println(curEquation);
             System.out.println('t');
+            int interval = 10;
+            int domainEnd = -300;
+            int domainStart = 300;
             return (ActionEvent e)->{
                 if (is_graphing == true){
-                    
+                    try{
+                        double[][] result = calc.range3d(curEquation, interval, domainEnd, domainStart,"");
+                        Canvas canvas = new Canvas();
+                        canvas.realtimeGraph(result, interval, domainStart, domainEnd);
+
+                    }
+                   
+
+                    catch(Exception IndexOutOfBoundsException){
+                        ans.setText("Error, please check graph equation.");
+                        curEquation = "";
+                    }
                 }
+                
                 else{
                     try{
                         double calculation = calc.answer(curEquation);
