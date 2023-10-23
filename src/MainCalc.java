@@ -20,6 +20,7 @@ public class MainCalc{
     private GridBagLayout GridBagLayoutGrid;
     private GridBagConstraints gbc;
     private JPanel numPanel = new JPanel();
+
     private static Calculator calc;
     private static boolean is_graphing = false;
     private static ArrayList<String> hist = new ArrayList<String>();
@@ -29,6 +30,7 @@ public class MainCalc{
 
     public MainCalc(Calculator c){
         calc = c;
+        canvas.is3DPlane = false;
         System.out.println(calc.answer("1+1"));
         System.out.println("test");
         window = new JFrame("Calculator");
@@ -39,7 +41,7 @@ public class MainCalc{
         window.setLayout(layout);  
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);  
         decorator();
-        window.getContentPane().setBackground( Color.lightGray );
+        window.getContentPane().setBackground(Color.lightGray);
         window.setVisible(false);
         }
 
@@ -140,16 +142,21 @@ public class MainCalc{
         GridBagConstraints main_constr = new GridBagConstraints();
     
         JToggleButton modeSwitch = new JToggleButton("Normal Mode");
+        JToggleButton modeSwitch2 = new JToggleButton("2D Graphing");
         modeSwitch.addItemListener(e -> {
             is_graphing = modeSwitch.isSelected();
             if (!is_graphing) {
+                modeSwitch2.setVisible(false);
                 canvas.setVisible(false);
                 canvas.dispose();
                 canvas = null;
                 modeSwitch.setText("Normal Mode");
-            } else {
+            } 
+            else {
                 canvas = new Canvas();
+                modeSwitch2.setVisible(true);
                 modeSwitch.setText("Graph Mode");
+
             }
         });
     
@@ -158,7 +165,26 @@ public class MainCalc{
         main_constr.insets = new Insets(5, 5, 5, 5);
         main_constr.anchor = GridBagConstraints.EAST;
         mainPanel.add(modeSwitch, main_constr);
+   
     
+        main_constr.gridx = 0;
+        main_constr.anchor = GridBagConstraints.WEST;
+        mainPanel.add(modeSwitch2, main_constr);
+        modeSwitch2.setVisible(false);
+
+        modeSwitch2.addItemListener(e ->{
+            canvas.is3DPlane = modeSwitch2.isSelected();
+            if (!canvas.is3DPlane) {
+                System.out.println("et pluribus unum");
+                modeSwitch2.setText("2D Graphing");
+            } 
+            else {
+                modeSwitch2.setText("3D Graphing");
+            }
+        });
+
+
+
         JTextArea answer = new JTextArea(3, 20);
         answer.setLineWrap(true);
         answer.setWrapStyleWord(true);

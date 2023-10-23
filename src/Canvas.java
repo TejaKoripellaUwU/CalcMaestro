@@ -22,7 +22,7 @@ public class Canvas extends JFrame{
     Image dbImage;
     Graphics dbGraphics;
 
-    public boolean is3DPlane = true;
+    public static boolean is3DPlane = true;
 
     public Canvas(){
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
