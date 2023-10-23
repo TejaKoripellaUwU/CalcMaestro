@@ -1,5 +1,5 @@
 import javax.swing.SwingUtilities;
-public class launcher {
+public class Launcher {
 
     public static void main(String[] args) {
         //thread safety

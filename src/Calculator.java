@@ -14,32 +14,14 @@ public class Calculator {
         return Engine.numbers.get(Parser.charToInt(codedAnswer.charAt(0)));
     }
 
-    public ArrayList<Double> range2d(String expression, double interval, double domainStart, double domainEnd) throws Exception{
-        ArrayList<Double> result = new ArrayList<>();
-        String coded = parser.findNumbers(expression);
-        int ogsize = Engine.numbers.size();
-        ArrayList<Callable<Double>> seq = new ArrayList<>();
-        parser.pemdasSimplify(coded, seq);
-        Engine.numbers = new ArrayList<Double>(Engine.numbers.subList(0, ogsize));
 
-        for (double i = domainStart; i <= domainEnd; i+=interval){
-            double ans = 0;
-            Engine.numbers = new ArrayList<Double>(Engine.numbers.subList(0, ogsize));
-            
-            for(int index : Engine.xIndices){
-                Engine.numbers.set(index, i);
-            }
-            for (Callable<Double> func : seq){
-                ans = func.call();
-                
-            }
-            result.add(ans);
+    public double[][] range(String expression, double interval, double domainStart, double domainEnd, String mode) throws Exception {
+        
+        if(!expression.contains("=")){
+            throw new Exception("missing equals");
         }
 
-        return result;
-    }
 
-    public double[][] range3d(String expression, double interval, double domainStart, double domainEnd, String mode) throws Exception {
         double acceptedTolerance = .1;
         
         boolean x, y, z; x=false; y=false; z=false;
@@ -54,14 +36,16 @@ public class Calculator {
             z = true;
         }
         
-        int size = (int) ((domainEnd - domainStart) / interval) + 1;
-
-        //double[][] result = new double[3][1];
 
         ArrayList<ArrayList<Double>> resultList = new ArrayList<>();
         resultList.add(new ArrayList<>());
         resultList.add(new ArrayList<>());
         resultList.add(new ArrayList<>());
+
+        //add +0 to each side to ensure it can detect the variables even if there are no operators
+        expression = expression + "+0";
+        int equalsIndex = expression.indexOf("=");
+        expression = expression.substring(0, equalsIndex) + "+0" + expression.substring(equalsIndex);
         
         String coded = parser.findNumbers(expression);
         System.out.println(coded);
@@ -69,10 +53,11 @@ public class Calculator {
         String rightSide = "";
         String leftSide = "";
         leftSide = coded;
-        if(coded.contains("=")){
-            leftSide = coded.substring(0, coded.indexOf("="));
-            rightSide = coded.substring(coded.indexOf("=")+1);
-        }
+
+        
+        leftSide = coded.substring(0, coded.indexOf("="));
+        rightSide = coded.substring(coded.indexOf("=")+1);
+        
 
         int ogsize = Engine.numbers.size();
         
@@ -99,6 +84,7 @@ public class Calculator {
 
         double xDomainEnd = domainEnd;
         double zDomainEnd = domainEnd;
+        
 
         if(!x){
             xDomainEnd = 0;
@@ -146,6 +132,7 @@ public class Calculator {
 
                     //jrate = 1;
                     if(diff <= acceptedTolerance){
+
                         resultList.get(0).add(i);
                         resultList.get(1).add(k);
                         resultList.get(2).add(j);

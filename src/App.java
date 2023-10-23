@@ -25,6 +25,6 @@ public class App{
 
 
 
-        double[][] result1 = calc.range3d(sphere, interval, domainStart, domainEnd, "");
+        double[][] result1 = calc.range(sphere, interval, domainStart, domainEnd, "");
     }
 }

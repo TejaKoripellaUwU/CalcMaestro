@@ -91,7 +91,7 @@ public class MainCalc{
             return (ActionEvent e)->{
                 if (is_graphing == true){
                     try{
-                        double[][] result = calc.range3d(curEquation, interval, domainEnd, domainStart,"");
+                        double[][] result = calc.range(curEquation, interval, domainEnd, domainStart,"");
                         canvas.setGraph(result, interval, domainStart, domainEnd);
                         //canvas.realtimeGraph(result, interval, domainStart, domainEnd);
 
