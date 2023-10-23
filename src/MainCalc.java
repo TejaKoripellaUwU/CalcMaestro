@@ -14,29 +14,27 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextArea;
 
 public class MainCalc{
-    private String[] function_list = {".","^","(",")","sqrt","abs","sin","cos","tan","arcsin","arcos","arctan","ln","x","y","z","=",};
-    private JFrame window;
+    private String[] function_list = {".","^","(",")","sqrt","abs","sin","cos","tan","arcsin","arcos","arctan","ln","x","y","z","=",}; // contains almost all funcs to be made into buttons
+    private JFrame window;  
     private String current_expression = "";
     private GridBagLayout GridBagLayoutGrid;
     private GridBagConstraints gbc;
     private JPanel numPanel = new JPanel();
-
-    private static Calculator calc;
+    private static Calculator calc; //calculator object to accept input and solve problems
     private static boolean is_graphing = false;
     private static ArrayList<String> hist = new ArrayList<String>();
     private static int history_iter = 0;
+    public static Canvas canvas; // main canvad for graphing 
 
-    public static Canvas canvas;
-
-    public MainCalc(Calculator c){
+    public MainCalc(Calculator c){ 
         calc = c;
-        canvas.is3DPlane = false;
+        canvas.is3DPlane = false; //sets mode for graphing 
         System.out.println(calc.answer("1+1"));
         System.out.println("test");
-        window = new JFrame("Calculator");
+        window = new JFrame("Calculator"); //creates main container 
         window.setSize(1000, 800);  
         window.setPreferredSize(window.getSize()); 
-        GridBagLayout layout = new GridBagLayout();
+        GridBagLayout layout = new GridBagLayout(); //creates layout manager for main container 
         gbc = new GridBagConstraints();    
         window.setLayout(layout);  
         window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);  
@@ -46,13 +44,13 @@ public class MainCalc{
         }
 
     public void show(){
-        window.setVisible(!(window.isVisible()));  
+        window.setVisible(!(window.isVisible()));  //used to launch project from launcher.java
     }
-    public static class Handler {
-        private static String curEquation = "";
+    public static class Handler {  //creates ActionListeners to be binded to buttons, giving them functionalties
+        private static String curEquation = ""; //tracks current user input to be given to calc
         
 
-        public static ActionListener rmString( JTextArea ans){
+        public static ActionListener rmString( JTextArea ans){ 
             return (ActionEvent e)->{
                 if((!(curEquation.equals(""))) && (!(ans.getText().contains("-")) )){
                     curEquation = curEquation.substring(0, curEquation.length() -1);
@@ -104,7 +102,7 @@ public class MainCalc{
                     try{
                         double calculation = calc.answer(curEquation);
                         hist.add(String.valueOf(calculation));
-                        ans.append("\n" + "----\n" + calculation );
+                        ans.append("\n" + "----\n" + calculation ); // this block of code handles displaying output in the answer field
                         if (history_iter < 12){
                             mem.append(curEquation + "=" + calculation + "\n");
                             history_iter = history_iter + 1;
@@ -135,17 +133,17 @@ public class MainCalc{
 
     
 
-    private void decorator() {
+    private void decorator() { //adds all major elements to ui, divides them in panels, and uses handler() to give them functions  
         String[] ops = { "+", "-", "*", "/" };
     
-        JPanel mainPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints main_constr = new GridBagConstraints();
+        JPanel mainPanel = new JPanel(new GridBagLayout()); // main panel for elements
+        GridBagConstraints main_constr = new GridBagConstraints(); //sub layout manager for elements
     
         JToggleButton modeSwitch = new JToggleButton("Normal Mode");
         JToggleButton modeSwitch2 = new JToggleButton("2D Graphing");
-        modeSwitch.addItemListener(e -> {
+        modeSwitch.addItemListener(e -> { //sets whether graphing is on on or not
             is_graphing = modeSwitch.isSelected();
-            if (!is_graphing) {
+            if (!is_graphing) { 
                 modeSwitch2.setVisible(false);
                 canvas.setVisible(false);
                 canvas.dispose();
@@ -153,7 +151,7 @@ public class MainCalc{
                 modeSwitch.setText("Normal Mode");
             } 
             else {
-                canvas = new Canvas();
+                canvas = new Canvas(); 
                 modeSwitch2.setVisible(true);
                 modeSwitch.setText("Graph Mode");
 
@@ -161,7 +159,7 @@ public class MainCalc{
         });
     
         main_constr.gridx = 0;
-        main_constr.gridy = 0;
+        main_constr.gridy = 0;   
         main_constr.insets = new Insets(5, 5, 5, 5);
         main_constr.anchor = GridBagConstraints.EAST;
         mainPanel.add(modeSwitch, main_constr);
@@ -172,7 +170,7 @@ public class MainCalc{
         mainPanel.add(modeSwitch2, main_constr);
         modeSwitch2.setVisible(false);
 
-        modeSwitch2.addItemListener(e ->{
+        modeSwitch2.addItemListener(e ->{ //sets whether graphing 2d or 3d
             canvas.is3DPlane = modeSwitch2.isSelected();
             if (!canvas.is3DPlane) {
                 canvas.angle = new double[3];
@@ -186,7 +184,7 @@ public class MainCalc{
 
 
 
-        JTextArea answer = new JTextArea(3, 20);
+        JTextArea answer = new JTextArea(3, 20);  //creates answer field 
         answer.setLineWrap(true);
         answer.setWrapStyleWord(true);
         answer.setFont(new Font("Arial", Font.BOLD, 30));
@@ -197,7 +195,7 @@ public class MainCalc{
         main_constr.anchor = GridBagConstraints.CENTER;
         mainPanel.add(answer, main_constr);
     
-        JPanel op_panel = new JPanel(new GridLayout(1, 4, 5, 5));
+        JPanel op_panel = new JPanel(new GridLayout(1, 4, 5, 5)); //creates ops buttons 
         for (String op : ops) {
             JButton button = new JButton(op);
             button.addActionListener(Handler.addString(op, answer));
@@ -211,46 +209,46 @@ public class MainCalc{
         main_constr.anchor = GridBagConstraints.CENTER;
         mainPanel.add(op_panel, main_constr);
     
-        JPanel num_panel = new JPanel(new GridLayout(5, 6, 5, 5)); 
+        JPanel num_panel = new JPanel(new GridLayout(5, 6, 5, 5));  //creates num panels
         for (int i = 0; i <= 26; i++) {
             JButton button;
-            if (i <= 9) {
+            if (i <= 9) { //creates ints 
                 button = new JButton(Integer.toString(i));
                 button.addActionListener(Handler.addString(Integer.toString(i), answer));
             } 
-            else if (9<i && i<=26){
+            else if (9<i && i<=26){ //creates funcs 
                 button = new JButton((function_list[(i-10)]));
                 button.addActionListener(Handler.addString((function_list[(i-10)]), answer));
                 
             }
             else{
-                button = new JButton();
+                button = new JButton(); //creates empty buttons 
             }
             button.setBackground(new Color(200, 235, 239));
             button.setPreferredSize(new Dimension(75, 40)); 
             num_panel.add(button);
         }
     
-        JTextArea history = new JTextArea("History:\n", 10, 20);
+        JTextArea history = new JTextArea("History:\n", 10, 20); //creates history text area
         history.setFont(new Font("Arial", Font.PLAIN, 25));
         history.setEditable(false);
         
 
 
 
-        JButton rm_button = new JButton("rm");
+        JButton rm_button = new JButton("rm"); //creates removal button 
         rm_button.addActionListener(Handler.rmString(answer));
         rm_button.setBackground(new Color(216, 239, 200));
         rm_button.setPreferredSize(new Dimension(75, 40)); 
         num_panel.add(rm_button);
 
-        JButton clr_button = new JButton("clr");
+        JButton clr_button = new JButton("clr"); //creates clear button 
         clr_button.addActionListener(Handler.clrString(answer));
         clr_button.setBackground(new Color(216, 239, 200));
         clr_button.setPreferredSize(new Dimension(75, 40)); 
         num_panel.add(clr_button);
         
-        JButton ans_button = new JButton("ans");
+        JButton ans_button = new JButton("ans"); //creates answer button
         ans_button.addActionListener(Handler.returnResult(answer, history));
         ans_button.setBackground(new Color(216, 239, 200));
         ans_button.setPreferredSize(new Dimension(75, 40)); 
