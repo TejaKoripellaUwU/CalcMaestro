@@ -4,18 +4,26 @@ import java.util.function.BiFunction;
 
 public class Parser {
 
-    private static int charskip = 200;
+    private static final int charskip = 200;
 
+
+    //need to skip important characters such as operation characters and digits
+    //that way the findNumbers function doesn't end up changing numbers into more operation characters
     public static char intToChar(int input){
         //skipping to avoid digits and operators
         return (char) (input+charskip);
     } 
-
     public static int charToInt(char input){
         //skipping to avoid digits and operators
         return (int) (input-charskip);
     }
 
+
+    //simplifies the coded expression one 'stage' at a time
+    //calls itself to reduce the expression into an answer
+    //also saves each operation as function references in the outSequence
+    //that way graphing can be done by just calling each function in order
+    //should be faster than just changes the input string every time
     public String pemdasSimplify(String input, ArrayList<Callable<Double>> outSequence){
         if (input.length() == 1){
             return input;
@@ -46,12 +54,13 @@ public class Parser {
 
         int offset = parenStart+1;
         
-        for (String[] ops : Engine.pemdasops){
+        for (String[] level : Engine.pemdasops){
             
             int earliestOpIndex = Integer.MAX_VALUE;
             String operator = "";
 
-            for (String op : ops){
+            //this makes left to right work for operations with same precedence
+            for (String op : level){
                 int opindex = working.indexOf(op);
                 if (opindex == -1){
                     continue;
@@ -62,11 +71,12 @@ public class Parser {
                 }
             }
 
-            if (ops.length == 1){
-                if(working.indexOf(ops[0]) == -1){
+
+            if (level.length == 1){
+                if(working.indexOf(level[0]) == -1){
                     continue;
                 }
-                operator = ops[0];
+                operator = level[0];
             }
 
             int firstNumIndex = operator.length() > 1 ? working.indexOf(operator) : working.indexOf(operator)-1;
@@ -74,7 +84,6 @@ public class Parser {
             if(firstNumIndex != -2 && secondNumIndex != 0){
                 
                 //keep adding expression results? to list and then access them based on counter?
-                //benchmark performance increase from just substitution in string
                 int firstListNumIndex = charToInt(working.charAt(firstNumIndex));
                 int secondListNumIndex = charToInt(working.charAt(secondNumIndex));
 
@@ -95,7 +104,10 @@ public class Parser {
     }
 
     
-
+    // finds the numbers, variables, and constants and interprets them from the original expression
+    // outputs a new coded expression where each number, variable is replaced with a character
+    // this is in order to avoid having to code a complex system to 'detect' numbers
+    // here we can just do it once and never again :=)
     public String findNumbers(String expression){
         expression = expression += " ";
         String currentNum = "";

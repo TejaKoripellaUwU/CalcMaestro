@@ -19,6 +19,8 @@ public class Canvas extends JFrame{
     long prevTime = 0;
     long time = 0;
 
+
+    // double buffering objects
     Image dbImage;
     Graphics dbGraphics;
 
@@ -36,6 +38,8 @@ public class Canvas extends JFrame{
         transformedPoints = new double[1][1];
     }
 
+
+    // draws the points to graphics
     public void drawPoints(Graphics2D g2D){
         if(is3DPlane){
             try {
@@ -74,6 +78,8 @@ public class Canvas extends JFrame{
         
     }
 
+
+    // actually paint onto double buffer object
     public void paintGraph(Graphics g){
                 
         Graphics2D g2D = (Graphics2D)g;
@@ -108,12 +114,15 @@ public class Canvas extends JFrame{
             g2D.drawString("Z", (int)z[0]+500, 1000 - ((int) z[2]+500));
         }
 
+        //draw fps counter
         if((time-prevTime) != 0){
             g2D.drawString(""+1000/(time - prevTime), 100, 100);
         }    
         
     }
 
+
+    // paint to the actual screen
     public void paint(Graphics g){
         prevTime = time;
         time = System.currentTimeMillis();
@@ -132,7 +141,7 @@ public class Canvas extends JFrame{
         this.repaint();
     }
 
-
+    //set graph parameters
     public void setGraph(double[][] points, double interval){
         this.points = points;
         this.interval = interval;
