@@ -73,7 +73,7 @@ public class MainCalc{
 
         public static ActionListener addString(String eq, JTextArea ans){
             return (ActionEvent e)->{
-                if((ans.getText().equals( "Error, please check expression") || (ans.getText().contains("-")))){
+                if((ans.getText().equals( "Error, please check expression") || (ans.getText().contains("---")))){
                     ans.setText(null);
                 }
                 curEquation += eq;
