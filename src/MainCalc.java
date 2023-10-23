@@ -84,17 +84,11 @@ public class MainCalc{
         public static ActionListener returnResult(JTextArea ans, JTextArea mem ){
             
             System.out.println(curEquation);
-            System.out.println('t');
-            int interval = 10;
-            int domainEnd = -300;
-            int domainStart = 300;
             return (ActionEvent e)->{
                 if (is_graphing == true){
                     try{
-                        double[][] result = calc.range(curEquation, interval, domainEnd, domainStart,"");
-                        canvas.setGraph(result, interval, domainStart, domainEnd);
-                        //canvas.realtimeGraph(result, interval, domainStart, domainEnd);
-
+                        double[][] result = calc.range(curEquation, "");
+                        canvas.setGraph(result, Params.interval);
                     }
                    
 
@@ -114,15 +108,10 @@ public class MainCalc{
                             history_iter = history_iter + 1;
                         }
                         else{
-                          //  System.out.println("E pluribus enum");
                             int new_index = mem.getText().indexOf('\n');
                             String result = mem.getText().substring(new_index + 1);
                             mem.setText(result);
                             mem.append(curEquation + "=" + calculation + "\n");
-
-
-
-                            
 
                         }
                         curEquation = "";
@@ -131,16 +120,13 @@ public class MainCalc{
                     catch(Exception IndexOutOfBoundsException){
                         ans.setText("Error, please check expression");
                         curEquation = "";
-
-                        
+    
                     }
                     
                 }
-                
-                
+
                curEquation = "";
             };
-
         
         }
     }

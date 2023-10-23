@@ -1,19 +1,10 @@
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.*;
 
-public class Canvas extends JFrame implements ActionListener{
+public class Canvas extends JFrame{
     public double[][] points;
     double[][] transformedPoints;
-
-    double domainEnd, domainStart;
-    double domain;
 
     static double[] angle = new double[3];
 
@@ -31,10 +22,9 @@ public class Canvas extends JFrame implements ActionListener{
     Image dbImage;
     Graphics dbGraphics;
 
-    boolean is3DPlane = false;
+    public boolean is3DPlane = true;
 
     public Canvas(){
-
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(1000, 1000);
         this.setLocationRelativeTo(null);
@@ -44,12 +34,9 @@ public class Canvas extends JFrame implements ActionListener{
         this.repaint();
 
         transformedPoints = new double[1][1];
-       
     }
 
     public void drawPoints(Graphics2D g2D){
-
-        
         if(is3DPlane){
             try {
                 transformedPoints = Util.rotate(this.points, angle[1]*(Math.PI/180), -angle[1] * (Math.PI/180), -angle[2] * (Math.PI/180));
@@ -64,21 +51,25 @@ public class Canvas extends JFrame implements ActionListener{
 
         for(int k = 0; k < this.points[0].length; k++){
             if(is3DPlane){
-                int green = (int)((this.points[2][k]-min)/range*255);
+                int green = (int)((this.points[2][k]-min)/this.range*255);
                 green = green > 255 ? 255 : green;
-                g2D.setColor(new Color((int)((this.points[1][k]-domainStart)/domain*255), green, (int)((this.points[0][k]-domainStart)/domain*255)));
+                g2D.setColor(new Color((int)((this.points[1][k]-Params.domainStart*Params.drawScale)/(Params.domain*Params.drawScale)*255), green, (int)((this.points[0][k]-Params.domainStart*Params.drawScale)/(Params.domain*Params.drawScale)*255), Params.drawAlpha));
             }else{
                 g2D.setColor(new Color(255, 255, 255));
             }
             
             
             
-            int dim = 3;
             //perspective?
             //g2D.fillRect((int)(p[0][k]*((50/(-p[1][k]+500)))+500-dim/2), 1000 - ((int)(p[2][k]*((50/(-p[1][k]+500)))+500+dim/2)), dim, dim);
         
             //ortho?
-            g2D.fillRect((int)(transformedPoints[0][k]+500-dim/2), 1000 - ((int)(transformedPoints[2][k]+500+dim/2)), dim, dim);
+            g2D.fillRect(
+                (int)(transformedPoints[0][k]+500-Params.splochDim/2), 
+                1000 - ((int)(transformedPoints[2][k]+500+Params.splochDim/2)), 
+                Params.splochDim, 
+                Params.splochDim
+            );
         }
         
     }
@@ -96,14 +87,14 @@ public class Canvas extends JFrame implements ActionListener{
         
 
         //draw x axis Blue
-        double[] x = Util.rotate(new double[]{200, 0, 0}, angle[1]*(Math.PI/180), -angle[1] * (Math.PI/180), -angle[2] * (Math.PI/180));
+        double[] x = Util.rotate(new double[]{300, 0, 0}, angle[1]*(Math.PI/180), -angle[1] * (Math.PI/180), -angle[2] * (Math.PI/180));
         g2D.setColor(new Color(100, 100, 255, 255));
         g2D.drawLine((int)0+500, 1000 - ((int) 0+500), (int)x[0]+500, 1000 - ((int) x[2]+500));
         g2D.drawString("X", (int)x[0]+500, 1000 - ((int) x[2]+500));
 
 
         //draw y axis Green
-        double[] y = Util.rotate(new double[]{0, 0, 200}, angle[1]*(Math.PI/180), -angle[1] * (Math.PI/180), -angle[2] * (Math.PI/180));
+        double[] y = Util.rotate(new double[]{0, 0, 300}, angle[1]*(Math.PI/180), -angle[1] * (Math.PI/180), -angle[2] * (Math.PI/180));
         g2D.setColor(new Color(0, 255, 0, 255));
         g2D.drawLine((int)0+500, 1000 - ((int) 0+500), (int)y[0]+500, 1000 - ((int) y[2]+500));
         g2D.drawString("Y", (int)y[0]+500, 1000 - ((int) y[2]+500));
@@ -111,7 +102,7 @@ public class Canvas extends JFrame implements ActionListener{
 
         //draw z axis Red
         if(is3DPlane){
-            double[] z = Util.rotate(new double[]{0, 200, 0}, angle[1]*(Math.PI/180), -angle[1] * (Math.PI/180), -angle[2] * (Math.PI/180));
+            double[] z = Util.rotate(new double[]{0, 300, 0}, angle[1]*(Math.PI/180), -angle[1] * (Math.PI/180), -angle[2] * (Math.PI/180));
             g2D.setColor(new Color(255, 0, 0, 255));
             g2D.drawLine((int)0+500, 1000 - ((int) 0+500), (int)z[0]+500, 1000 - ((int) z[2]+500));
             g2D.drawString("Z", (int)z[0]+500, 1000 - ((int) z[2]+500));
@@ -130,27 +121,21 @@ public class Canvas extends JFrame implements ActionListener{
         dbImage = createImage(1000, 1000);
         dbGraphics = dbImage.getGraphics();
 
-            
-
         paintGraph(dbGraphics);
         g.drawImage(dbImage, 0, 0, this);
-
 
         if(is3DPlane){
             angle[2] = (MouseInfo.getPointerInfo().getLocation().x - 500) / 1000.0 * 360;
             angle[1] = (MouseInfo.getPointerInfo().getLocation().y - 500) / 1000.0 * 360;
         }
+
         this.repaint();
     }
 
 
-    public void setGraph(double[][] points, double interval, double domainStart, double domainEnd){
+    public void setGraph(double[][] points, double interval){
         this.points = points;
         this.interval = interval;
-        this.domainStart = domainStart;
-        this.domainEnd = domainEnd;
-        this.domain = domainEnd - domainStart;
-        this.inputPoints = this.points[0].length;
 
         double max = Double.MIN_VALUE;
         double min = Double.MAX_VALUE;
@@ -167,15 +152,17 @@ public class Canvas extends JFrame implements ActionListener{
         this.min = min;
         this.range = max - min;
         if (Double.isInfinite(this.range)){
-            this.range = 600;
+            this.range = 60;
         }
-        
-        System.out.println(this.range);
-    }
 
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        this.repaint();
+        for(int i = 0; i < this.points[0].length; i++){
+            this.points[0][i] = this.points[0][i] * Params.drawScale;
+            this.points[1][i] = this.points[1][i] * Params.drawScale;
+            this.points[2][i] = this.points[2][i] * Params.drawScale;
+        }
+        this.range *= Params.drawScale;
+        this.min *= Params.drawScale;
+
     }
 }

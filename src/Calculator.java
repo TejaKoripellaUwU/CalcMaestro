@@ -15,7 +15,7 @@ public class Calculator {
     }
 
 
-    public double[][] range(String expression, double interval, double domainStart, double domainEnd, String mode) throws Exception {
+    public double[][] range(String expression, String mode) throws Exception {
         
         if(!expression.contains("=")){
             throw new Exception("missing equals");
@@ -46,7 +46,7 @@ public class Calculator {
         expression = expression + "+0";
         int equalsIndex = expression.indexOf("=");
         expression = expression.substring(0, equalsIndex) + "+0" + expression.substring(equalsIndex);
-        
+
         String coded = parser.findNumbers(expression);
         System.out.println(coded);
 
@@ -72,18 +72,18 @@ public class Calculator {
         double lr = .1;
 
         double diff = 1 / lr;
-        double jrate = interval;
+        double jrate = Params.interval;
 
 
-        double iInterval = interval;
-        double kInterval = interval;
+        double iInterval = Params.interval;
+        double kInterval = Params.interval;
 
 
-        double xDomainStart = domainStart;
-        double zDomainStart = domainStart;
+        double xDomainStart = Params.domainStart;
+        double zDomainStart = Params.domainStart;
 
-        double xDomainEnd = domainEnd;
-        double zDomainEnd = domainEnd;
+        double xDomainEnd = Params.domainEnd;
+        double zDomainEnd = Params.domainEnd;
         
 
         if(!x){
@@ -100,9 +100,9 @@ public class Calculator {
             for (double k = zDomainStart; k <= zDomainEnd; k+=kInterval){
 
                 diff = 1;
-                jrate = interval;
+                jrate = Params.interval;
 
-                for(double j = domainStart; j <= domainEnd; j+=jrate){
+                for(double j = Params.domainStart; j <= Params.domainEnd; j+=jrate){
 
                     
 
@@ -127,16 +127,18 @@ public class Calculator {
                     }
 
                     diff = Math.abs(rightans - leftans);
-                    jrate = diff*.001;
-        
+                    jrate = diff*Params.learningRate;
 
+                    if(jrate > 10){
+                        jrate = 10;
+                    }
                     //jrate = 1;
                     if(diff <= acceptedTolerance){
 
                         resultList.get(0).add(i);
                         resultList.get(1).add(k);
                         resultList.get(2).add(j);
-                        jrate = interval;
+                        jrate = Params.interval;
                     }
 
                 } 
