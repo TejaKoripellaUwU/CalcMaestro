@@ -175,6 +175,7 @@ public class MainCalc{
         modeSwitch2.addItemListener(e ->{
             canvas.is3DPlane = modeSwitch2.isSelected();
             if (!canvas.is3DPlane) {
+                canvas.angle = new double[3];
                 System.out.println("et pluribus unum");
                 modeSwitch2.setText("2D Graphing");
             } 

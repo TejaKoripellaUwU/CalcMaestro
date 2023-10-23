@@ -1,15 +1,15 @@
 public class Params {
 
-    public static double domainStart = -30;
-    public static double domainEnd = 30;
+    public static double domainStart = -10;
+    public static double domainEnd = 10;
     public static double domain = domainEnd - domainStart;
-    public static double maxRange = 60;
-    public static double drawScale = 10;
+    public static double maxRange = 20;
+    public static double drawScale = 30;
 
     public static int drawAlpha = 255; //anything lower than 255 kills the performance
     public static int splochDim = 1;
 
-    public static double interval = .5;
+    public static double interval = .2;
     public static double learningRate = 0.01;
 
     public static String sphere = "x^2+y^2+z^2=125^2";
