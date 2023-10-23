@@ -102,87 +102,132 @@ public class Calculator {
                 diff = 1;
                 jrate = Params.interval;
 
-                for(double j = Params.domainStart; j < 0; j+=jrate){
-                    double leftans = 0;
-                    double rightans = 0;
-                    Engine.numbers = new ArrayList<Double>(Engine.numbers.subList(0, ogsize));
 
-                    for(int index : Engine.xIndices){
-                        Engine.numbers.set(index, i); //i
-                    }
-                    for(int index : Engine.zIndices){
-                        Engine.numbers.set(index, k); //k
-                    }
-                    for(int index : Engine.yIndices){
-                        Engine.numbers.set(index, j); //j
-                    }
-                    for(Callable<Double> func : leftseq){
-                        leftans = func.call();
-                    }
-                    for(Callable<Double> func : rightSeq){
-                        rightans = func.call();
-                    }
+                if(Params.fastSolverButBad){
+                    for(double j = Params.domainStart; j < 0; j+=jrate){
+                        double leftans = 0;
+                        double rightans = 0;
+                        Engine.numbers = new ArrayList<Double>(Engine.numbers.subList(0, ogsize));
+    
+                        for(int index : Engine.xIndices){
+                            Engine.numbers.set(index, i); //i
+                        }
+                        for(int index : Engine.zIndices){
+                            Engine.numbers.set(index, k); //k
+                        }
+                        for(int index : Engine.yIndices){
+                            Engine.numbers.set(index, j); //j
+                        }
+                        for(Callable<Double> func : leftseq){
+                            leftans = func.call();
+                        }
+                        for(Callable<Double> func : rightSeq){
+                            rightans = func.call();
+                        }
+    
+                        diff = Math.abs(rightans - leftans);
+                        jrate = diff*Params.learningRate;
+    
+                        //jrate = Params.interval;
+    
+                        if(jrate > Params.interval){
+                            jrate = Params.interval;
+                        }
+                        //jrate = 1;
+                        if(diff <= acceptedTolerance){
+    
+                            resultList.get(0).add(i);
+                            resultList.get(1).add(k);
+                            resultList.get(2).add(j);
+                            jrate = Params.interval;
+                            break;
+                        }
+                    } 
+    
+    
+                    for(double j = Params.domainEnd; j >= 0; j-=jrate){
+                        double leftans = 0;
+                        double rightans = 0;
+                        Engine.numbers = new ArrayList<Double>(Engine.numbers.subList(0, ogsize));
+    
+                        for(int index : Engine.xIndices){
+                            Engine.numbers.set(index, i); //i
+                        }
+                        for(int index : Engine.zIndices){
+                            Engine.numbers.set(index, k); //k
+                        }
+                        for(int index : Engine.yIndices){
+                            Engine.numbers.set(index, j); //j
+                        }
+                        for(Callable<Double> func : leftseq){
+                            leftans = func.call();
+                        }
+                        for(Callable<Double> func : rightSeq){
+                            rightans = func.call();
+                        }
+    
+                        diff = Math.abs(rightans - leftans);
+                        jrate = diff*Params.learningRate;
+    
+                        //jrate = Params.interval;
+    
+                        if(jrate > Params.interval){
+                            jrate = Params.interval;
+                        }
+                        //jrate = 1;
+                        if(diff <= acceptedTolerance){
+    
+                            resultList.get(0).add(i);
+                            resultList.get(1).add(k);
+                            resultList.get(2).add(j);
+                            jrate = Params.interval;
+                            break;
+                        }
+    
+                    } 
+                }else{
+                    for(double j = Params.domainStart; j <= Params.domainEnd; j+=jrate){
+                        double leftans = 0;
+                        double rightans = 0;
+                        Engine.numbers = new ArrayList<Double>(Engine.numbers.subList(0, ogsize));
+    
+                        for(int index : Engine.xIndices){
+                            Engine.numbers.set(index, i); //i
+                        }
+                        for(int index : Engine.zIndices){
+                            Engine.numbers.set(index, k); //k
+                        }
+                        for(int index : Engine.yIndices){
+                            Engine.numbers.set(index, j); //j
+                        }
+                        for(Callable<Double> func : leftseq){
+                            leftans = func.call();
+                        }
+                        for(Callable<Double> func : rightSeq){
+                            rightans = func.call();
+                        }
+    
+                        diff = Math.abs(rightans - leftans);
+                        jrate = diff*Params.learningRate;
+    
+                        //jrate = Params.interval;
+    
+                        if(jrate > Params.interval){
+                            jrate = Params.interval;
+                        }
+                        //jrate = 1;
+                        if(diff <= acceptedTolerance){
+    
+                            resultList.get(0).add(i);
+                            resultList.get(1).add(k);
+                            resultList.get(2).add(j);
+                            jrate = Params.interval;
+                        }
+    
+                    } 
+                }
+                    
 
-                    diff = Math.abs(rightans - leftans);
-                    jrate = diff*Params.learningRate;
-
-                    //jrate = Params.interval;
-
-                    if(jrate > Params.interval){
-                        jrate = Params.interval;
-                    }
-                    //jrate = 1;
-                    if(diff <= acceptedTolerance){
-
-                        resultList.get(0).add(i);
-                        resultList.get(1).add(k);
-                        resultList.get(2).add(j);
-                        jrate = Params.interval;
-                        break;
-                    }
-                } 
-
-
-                for(double j = Params.domainEnd; j >= 0; j-=jrate){
-                    double leftans = 0;
-                    double rightans = 0;
-                    Engine.numbers = new ArrayList<Double>(Engine.numbers.subList(0, ogsize));
-
-                    for(int index : Engine.xIndices){
-                        Engine.numbers.set(index, i); //i
-                    }
-                    for(int index : Engine.zIndices){
-                        Engine.numbers.set(index, k); //k
-                    }
-                    for(int index : Engine.yIndices){
-                        Engine.numbers.set(index, j); //j
-                    }
-                    for(Callable<Double> func : leftseq){
-                        leftans = func.call();
-                    }
-                    for(Callable<Double> func : rightSeq){
-                        rightans = func.call();
-                    }
-
-                    diff = Math.abs(rightans - leftans);
-                    jrate = diff*Params.learningRate;
-
-                    //jrate = Params.interval;
-
-                    if(jrate > Params.interval){
-                        jrate = Params.interval;
-                    }
-                    //jrate = 1;
-                    if(diff <= acceptedTolerance){
-
-                        resultList.get(0).add(i);
-                        resultList.get(1).add(k);
-                        resultList.get(2).add(j);
-                        jrate = Params.interval;
-                        break;
-                    }
-
-                } 
 
             }
         }

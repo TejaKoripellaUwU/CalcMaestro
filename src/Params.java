@@ -13,8 +13,9 @@ public class Params {
 
 
     // parameters for solving speed and accuracy
-    public static double interval = .1;
+    public static double interval = .2;
     public static double learningRate = 0.01;
+    public static boolean fastSolverButBad = false;
 
 
     //unused graph equations
