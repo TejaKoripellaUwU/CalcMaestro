@@ -24,6 +24,9 @@ public class MainCalc{
     private static boolean is_graphing = false;
     private static ArrayList<String> hist = new ArrayList<String>();
     private static int history_iter = 0;
+
+    public static Canvas canvas;
+
     public MainCalc(Calculator c){
         calc = c;
         System.out.println(calc.answer("1+1"));
@@ -61,7 +64,9 @@ public class MainCalc{
             return (ActionEvent e)->{
                     ans.setText("");
                     curEquation = "";
-
+                    if(is_graphing){
+                        canvas.points = null;
+                    }
                 };
             };
         
@@ -87,8 +92,8 @@ public class MainCalc{
                 if (is_graphing == true){
                     try{
                         double[][] result = calc.range3d(curEquation, interval, domainEnd, domainStart,"");
-                        Canvas canvas = new Canvas();
-                        canvas.realtimeGraph(result, interval, domainStart, domainEnd);
+                        canvas.setGraph(result, interval, domainStart, domainEnd);
+                        //canvas.realtimeGraph(result, interval, domainStart, domainEnd);
 
                     }
                    
@@ -152,8 +157,12 @@ public class MainCalc{
         modeSwitch.addItemListener(e -> {
             is_graphing = modeSwitch.isSelected();
             if (!is_graphing) {
+                canvas.setVisible(false);
+                canvas.dispose();
+                canvas = null;
                 modeSwitch.setText("Normal Mode");
             } else {
+                canvas = new Canvas();
                 modeSwitch.setText("Graph Mode");
             }
         });
