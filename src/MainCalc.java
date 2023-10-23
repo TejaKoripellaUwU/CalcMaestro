@@ -85,18 +85,38 @@ public class MainCalc{
             int domainStart = 300;
             return (ActionEvent e)->{
                 if (is_graphing == true){
-                    try{
-                        double[][] result = calc.range3d(curEquation, interval, domainEnd, domainStart,"");
-                        Canvas canvas = new Canvas();
-                        canvas.realtimeGraph(result, interval, domainStart, domainEnd);
+                    ArrayList<CharSequence> vars = new ArrayList<CharSequence>();
 
+                    if(curEquation.contains("x")){vars.add("x");}
+                    if(curEquation.contains("z")){vars.add("z");}
+                    if(curEquation.contains("y")){vars.add("y");}
+                    if(vars.size() == 3){
+                        try{
+                            System.out.println(curEquation);
+                            double[][] result = calc.range3d(curEquation, interval, domainEnd, domainStart,"");
+                            Canvas canvas = new Canvas();
+                            canvas.realtimeGraph(result, interval, domainStart, domainEnd);
+    
+                        }
+                        catch(Exception IndexOutOfBoundsException){
+                            ans.setText("Error, please check graph equation.");
+                            curEquation = "";
+                        }
+                    }else if(vars.size() == 2){
+                        //Eventually change this to support vanilla 2d graphing
+                        try{
+                            System.out.println(curEquation);
+                            double[][] result = calc.range3d(curEquation, interval, domainEnd, domainStart,"");
+                            Canvas canvas = new Canvas();
+                            canvas.realtimeGraph(result, interval, domainStart, domainEnd);
+    
+                        }
+                        catch(Exception IndexOutOfBoundsException){
+                            ans.setText("Error, please check graph equation.");
+                            curEquation = "";
+                        }
                     }
-                   
 
-                    catch(Exception IndexOutOfBoundsException){
-                        ans.setText("Error, please check graph equation.");
-                        curEquation = "";
-                    }
                 }
                 
                 else{
@@ -114,10 +134,6 @@ public class MainCalc{
                             String result = mem.getText().substring(new_index + 1);
                             mem.setText(result);
                             mem.append(curEquation + "=" + calculation + "\n");
-
-
-
-                            
 
                         }
                         curEquation = "";
@@ -139,7 +155,6 @@ public class MainCalc{
         
         }
     }
-
     
 
     private void decorator() {
@@ -212,9 +227,6 @@ public class MainCalc{
         JTextArea history = new JTextArea("History:\n", 10, 20);
         history.setFont(new Font("Arial", Font.PLAIN, 25));
         history.setEditable(false);
-        
-
-
 
         JButton rm_button = new JButton("rm");
         rm_button.addActionListener(Handler.rmString(answer));

@@ -91,7 +91,13 @@ public class Parser {
                 return this.pemdasSimplify(full, outSequence);
             }
         }
-        return this.pemdasSimplify(full, outSequence);
+        try{
+            return this.pemdasSimplify(full, outSequence);
+        }
+        catch (Exception e){
+            return null;
+        }
+        
     }
 
     

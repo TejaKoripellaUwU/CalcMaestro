@@ -39,7 +39,7 @@ public class Canvas extends JFrame implements ActionListener{
 
     public Canvas(){
 
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setSize(1000, 1000);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
