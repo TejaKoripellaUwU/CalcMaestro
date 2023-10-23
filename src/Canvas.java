@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class Canvas extends JFrame implements ActionListener{
-    double[][] points;
+    public double[][] points;
     double domainEnd, domainStart;
     double domain;
 
@@ -45,17 +45,12 @@ public class Canvas extends JFrame implements ActionListener{
         this.setVisible(true);
 
        timer = new Timer(200, this);
+
+       this.repaint();
        
     }
 
-    public void paintGraph(Graphics g){
-                
-        Graphics2D g2D = (Graphics2D)g;
-
-        g2D.setColor(new Color(0, 0, 0));
-        g2D.fillRect(0, 0, 1000, 1000);
-
-
+    public void drawPoints(Graphics2D g2D){
         double[][] p = new double[1][1];
         try {
             p = Util.rotate(this.points, angle[1]*(Math.PI/180), -angle[1] * (Math.PI/180), -angle[2] * (Math.PI/180));
@@ -75,12 +70,25 @@ public class Canvas extends JFrame implements ActionListener{
                 g2D.setColor(new Color((int)((this.points[1][k]-domainStart)/domain*255), green, (int)((this.points[0][k]-domainStart)/domain*255)));
                 int dim = 3;
                 //perspective?
-                g2D.fillRect((int)(p[0][k]*((50/(-p[1][k]+500)))+500-dim/2), 1000 - ((int)(p[2][k]*((50/(-p[1][k]+500)))+500+dim/2)), dim, dim);
+                //g2D.fillRect((int)(p[0][k]*((50/(-p[1][k]+500)))+500-dim/2), 1000 - ((int)(p[2][k]*((50/(-p[1][k]+500)))+500+dim/2)), dim, dim);
             
                 //ortho?
-                //g2D.fillRect((int)(p[0][k]+500-dim/2), 1000 - ((int)(p[2][k]+500+dim/2)), dim, dim);
+                g2D.fillRect((int)(p[0][k]+500-dim/2), 1000 - ((int)(p[2][k]+500+dim/2)), dim, dim);
             }
         }
+    }
+
+    public void paintGraph(Graphics g){
+                
+        Graphics2D g2D = (Graphics2D)g;
+
+        g2D.setColor(new Color(0, 0, 0));
+        g2D.fillRect(0, 0, 1000, 1000);
+
+        if(this.points != null)
+            this.drawPoints(g2D);
+
+        
 
         //draw x axis Blue
         double[] x = Util.rotate(new double[]{200, 0, 0}, angle[1]*(Math.PI/180), -angle[1] * (Math.PI/180), -angle[2] * (Math.PI/180));
@@ -113,9 +121,6 @@ public class Canvas extends JFrame implements ActionListener{
         dbImage = createImage(1000, 1000);
         dbGraphics = dbImage.getGraphics();
 
-        if (this.points == null){
-            return; 
-        }
             
 
         paintGraph(dbGraphics);
@@ -131,7 +136,12 @@ public class Canvas extends JFrame implements ActionListener{
         }
     }
 
-    public void realtimeGraph(double[][] points, double interval, double domainStart, double domainEnd) throws InterruptedException{
+    // public void realtimeGraph(double[][] points, double interval, double domainStart, double domainEnd) throws InterruptedException{    
+    //     this.setGraph();
+    //     this.repaint();
+    // }
+
+    public void setGraph(double[][] points, double interval, double domainStart, double domainEnd){
         this.points = points;
         this.interval = interval;
         this.domainStart = domainStart;
@@ -159,7 +169,6 @@ public class Canvas extends JFrame implements ActionListener{
         
 
         System.out.println(this.range);
-        this.repaint();
     }
 
 
