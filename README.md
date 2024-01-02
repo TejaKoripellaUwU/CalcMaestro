@@ -1,5 +1,5 @@
 # CalcMaestro
-## Sexy Ass Calculator
+## 3D graphing Calculator
 ### Ankit Malhotra, Reshil Bejoy, Teja Koripella
 
 <img src="home.png" alt="drawing" width="400"/>
