@@ -1,0 +1,74 @@
+Project 2
+-------------------------------------------------------------------------------
+
+Contributor Code Docu Adj. Score
+----------- ---- ---- ---- -----
+Ankit        694   23   +3 20/20 A
+Reshil       457    *    0 19/20 A
+Teja           4    2   -3 16/20 B-
+
+-------------------------------------------------------------------------------
+
+Rubric:
+1. Baseline:   15
+2. Creativity: +3       pemdas, graphing, relations
+3. Design:     +2.5     nice UI, 3D graphics
+4. Clean code: +0
+5. Document:   +0.5
+   Discount:   -2       for having three contributors
+   Total:      19
+
+-------------------------------------------------------------------------------
+
+Comments:
+* MainCala.java
+- I like the way you create buttons programmatically.
+- The code could be easier to read though. You have lots of very long
+  functions. Can you think of a way of breaking it down into simpler ones?
+- Teja, I see that you checked in some code on the UI branch, but it doesn't
+  look like much?
+
+* Calculator.java
+- The way you graph relations is ingenious! :-) It's far from exact (e.g. try
+  graphing x/1000=0 or x*1000=500), but for many relations it gets the job
+  done.
+
+* Canvas.java
+- This is amazing. Plotting the points with color and letting you rotate
+  is makes for a surprisngly good UI for visualizing 3D relations. Nicely done.
+- Also good job getting double-buffering working.
+
+* Parser.java
+- Good job implementing order of operations and parentheses!
+- I like the way you generalize the precedence of operators.
+- It doesn't handle errors cleanly. I often get exceptions printed on the
+  console.
+
+* Calc Maestro Design Doc.docx
+- Nice overview of your functionality and breakdown of the main modules.
+
+-------------------------------------------------------------------------------
+
+Generic fine print:
+a. "Code" shows the approximate lines of code contributed. This is just a line
+   count of "git blame" and shouldn't be taken too seriously. Still, in many
+   cases it gives quick sniff test of who did how much work.
+b. "Docu" is the same thing applied to the documentation if it is in markdown.
+c. "Adj." is a credit adjustment for contributors who did significantly more or
+   less than than average contributor. Credit adjustments sum to 0.
+d. "Score" is the final score, taken by adding the lines from the rubric and
+   the credit adjustment.
+
+1. "Baseline" means all requirements are met. This gives you a C if it's all you
+   have.
+2. "Creativity" is a measure of how much tought and energy you put into going
+   beyond the minimum requirements.
+   Points can be deducted here if some requirements are missing.
+3. "Design" gives extra points for the look of the UI and overall usability.
+   Points can be deducted here if there are errors or crashes.
+4. "Clean code" indicates how easy the code is to read. Good code consists of
+   short functions with clear names, organized in a coherent way.
+   Points can be deducted here if code is redundant or especially messy.
+5. "Document" gives extra points if the documentation is especially clear or
+   comprehensive.
+   Points can be deducted here if the documentation is missing or insufficient.
