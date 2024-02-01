@@ -6,12 +6,15 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.Utilities;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
 import javax.swing.JTextArea;
+
 
 public class MainCalc{
     private String[] function_list = {".","^","(",")","sqrt","abs","sin","cos","tan","arcsin","arcos","arctan","ln","x","y","z","=",}; // contains almost all funcs to be made into buttons
@@ -110,7 +113,7 @@ public class MainCalc{
                         else{
                             int new_index = mem.getText().indexOf('\n');
                             String result = mem.getText().substring(new_index + 1);
-                            mem.setText(result);
+                            mem.setText(result); 
                             mem.append(curEquation + "=" + calculation + "\n");
 
                         }
@@ -126,9 +129,12 @@ public class MainCalc{
                 }
 
                curEquation = "";
+               hist.add(curEquation + "=" + ans + "\n");
+               curEquation = "";
             };
         
         }
+        
     }
 
     
@@ -233,7 +239,40 @@ public class MainCalc{
         history.setFont(new Font("Arial", Font.PLAIN, 25));
         history.setEditable(false);
         
-
+        history.addMouseListener(new MouseAdapter() {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            JTextArea historyTextArea = (JTextArea) e.getSource();
+            int offset = historyTextArea.viewToModel(e.getPoint());
+        
+            try {
+                int lineStart = Utilities.getRowStart(historyTextArea, offset);
+                int lineEnd = Utilities.getRowEnd(historyTextArea, offset);
+        
+                String clickedItem = historyTextArea.getText(lineStart, lineEnd - lineStart).trim();
+        
+                // Find the index of '=' in the clickedItem
+                int equalsIndex = clickedItem.indexOf('=');
+        
+                if (equalsIndex != -1) {
+                    // Extract the part after '='
+                    String expressionAfterEquals = clickedItem.substring(equalsIndex + 1).trim();
+        
+                    // Set the clicked item to the current expression
+                    Handler.curEquation = Handler.curEquation + expressionAfterEquals;
+        
+                    // Update the answer JTextArea with the part after '='
+                    answer.setText(Handler.curEquation);
+        
+                    // Reset the history to the selected item
+                    int index = history.getText().indexOf(clickedItem);
+                    history.setText(history.getText().substring(0, index + clickedItem.length() + 1));
+                }
+            } catch (BadLocationException ex) {
+                ex.printStackTrace();
+            }
+        }
+});
 
 
         JButton rm_button = new JButton("rm"); //creates removal button 
@@ -285,4 +324,3 @@ public class MainCalc{
         //window.add(button,gbc);
     //}
 }
-
